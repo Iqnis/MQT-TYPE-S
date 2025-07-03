@@ -94,7 +94,8 @@ export default function Index() {
 
   const resetTimer = () => {
     setIsRunning(false);
-    setTimeLeft(initialTime);
+    setTimeLeft(60);
+    setInitialTime(60);
     setIsFinished(false);
     playSound("reset");
   };

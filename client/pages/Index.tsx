@@ -80,9 +80,12 @@ export default function Index() {
     } else if (event.code === "ArrowDown") {
       event.preventDefault();
       setTimeLeft((prev) => Math.max(0, prev - 5));
-    } else if (event.code === "Space") {
+    } else if (event.code === "Space" || event.code === "Enter") {
       event.preventDefault();
       toggleTimer();
+    } else if (event.code === "KeyR") {
+      event.preventDefault();
+      resetTimer();
     }
   }, []);
 

@@ -7,6 +7,7 @@ export default function Index() {
   const [initialTime, setInitialTime] = useState(60);
   const [isRunning, setIsRunning] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+  const [showButtons, setShowButtons] = useState(true);
 
   // Sound effects (placeholder - replace with actual audio files)
   const playSound = (soundType: string) => {

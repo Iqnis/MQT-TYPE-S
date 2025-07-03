@@ -146,9 +146,72 @@ export default function Index() {
           className={`absolute inset-0 rounded-full blur-3xl ${colors.glow} shadow-2xl opacity-40 scale-110`}
         ></div>
 
-        {/* Timer circle */}
-        <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem]">
+        {/* Timer circle - Much larger */}
+        <div className="relative w-[32rem] h-[32rem] md:w-[40rem] md:h-[40rem] lg:w-[48rem] lg:h-[48rem]">
           <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+            {/* Clock face background with subtle pattern */}
+            <circle
+              cx="50"
+              cy="50"
+              r="47"
+              fill="rgba(255, 255, 255, 0.05)"
+              stroke="rgba(255, 255, 255, 0.1)"
+              strokeWidth="0.5"
+            />
+
+            {/* Hour markers */}
+            {Array.from({ length: 12 }, (_, i) => {
+              const angle = i * 30 - 90;
+              const isQuarterHour = i % 3 === 0;
+              const innerRadius = isQuarterHour ? 40 : 42;
+              const outerRadius = 45;
+              const x1 = 50 + innerRadius * Math.cos((angle * Math.PI) / 180);
+              const y1 = 50 + innerRadius * Math.sin((angle * Math.PI) / 180);
+              const x2 = 50 + outerRadius * Math.cos((angle * Math.PI) / 180);
+              const y2 = 50 + outerRadius * Math.sin((angle * Math.PI) / 180);
+
+              return (
+                <line
+                  key={i}
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
+                  stroke="rgba(255, 255, 255, 0.3)"
+                  strokeWidth={isQuarterHour ? "0.8" : "0.4"}
+                  strokeLinecap="round"
+                />
+              );
+            })}
+
+            {/* Minute markers */}
+            {Array.from({ length: 60 }, (_, i) => {
+              if (i % 5 !== 0) {
+                // Skip hour markers
+                const angle = i * 6 - 90;
+                const innerRadius = 43;
+                const outerRadius = 45;
+                const x1 = 50 + innerRadius * Math.cos((angle * Math.PI) / 180);
+                const y1 = 50 + innerRadius * Math.sin((angle * Math.PI) / 180);
+                const x2 = 50 + outerRadius * Math.cos((angle * Math.PI) / 180);
+                const y2 = 50 + outerRadius * Math.sin((angle * Math.PI) / 180);
+
+                return (
+                  <line
+                    key={i}
+                    x1={x1}
+                    y1={y1}
+                    x2={x2}
+                    y2={y2}
+                    stroke="rgba(255, 255, 255, 0.15)"
+                    strokeWidth="0.2"
+                    strokeLinecap="round"
+                  />
+                );
+              }
+              return null;
+            })}
+
             {/* Background circle */}
             <circle
               cx="50"
@@ -159,69 +222,36 @@ export default function Index() {
               fill="none"
               className="text-white/20"
             />
+
             {/* Progress circle */}
             <circle
               cx="50"
               cy="50"
               r="45"
               stroke="currentColor"
-              strokeWidth="3"
+              strokeWidth="4"
               fill="none"
               className={`${colors.circle} transition-all duration-1000 drop-shadow-lg`}
               strokeLinecap="round"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               style={{
-                filter: `drop-shadow(0 0 8px currentColor)`,
+                filter: `drop-shadow(0 0 12px currentColor)`,
                 transition: "stroke-dashoffset 1s ease-in-out",
               }}
             />
           </svg>
 
-          {/* Center content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            {/* Time display */}
+          {/* Center content - Perfectly centered */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            {/* Time display - Larger and perfectly centered */}
             <div
-              className={`text-6xl md:text-7xl lg:text-8xl font-mono font-bold ${colors.text} mb-4 transition-colors duration-1000`}
+              className={`text-8xl md:text-9xl lg:text-[8rem] font-mono ${colors.text} transition-colors duration-1000 text-center leading-none`}
+              style={{ fontWeight: 400 }}
             >
               {formatTime(timeLeft)}
             </div>
-
-            {/* Control button */}
-            <button
-              onClick={toggleTimer}
-              className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
-              aria-label={isRunning ? "Pause timer" : "Start timer"}
-            >
-              {isRunning ? (
-                <Pause
-                  className={`w-8 h-8 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
-                />
-              ) : (
-                <Play
-                  className={`w-8 h-8 ${colors.text} group-hover:scale-110 transition-transform duration-200 ml-1`}
-                />
-              )}
-            </button>
-
-            {/* Status text */}
-            <div
-              className={`mt-6 text-lg ${colors.text} opacity-75 transition-all duration-1000`}
-            >
-              {isFinished
-                ? "Time's up!"
-                : isRunning
-                  ? "Running..."
-                  : "Ready to start"}
-            </div>
           </div>
-        </div>
-
-        {/* Progress percentage */}
-        <div
-          className={`absolute -bottom-16 left-1/2 -translate-x-1/2 text-2xl font-semibold ${colors.text} opacity-60 transition-all duration-1000`}
-        >
-          {Math.round(progress)}%
         </div>
       </div>
 

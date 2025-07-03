@@ -264,8 +264,7 @@ export default function Index() {
       {/* Controls help */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
         <div className={`text-sm ${colors.text} opacity-50 space-y-1`}>
-          <p>↑↓ Add/Remove 5s • Enter/Space Play/Pause • R Reset</p>
-          <p>Current: {initialTime}s default</p>
+          <p></p>
         </div>
       </div>
 

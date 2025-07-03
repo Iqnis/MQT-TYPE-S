@@ -221,14 +221,14 @@ export default function Index() {
               cy="50"
               r="45"
               stroke="currentColor"
-              strokeWidth="4"
+              strokeWidth="2"
               fill="none"
               className={`${colors.circle} transition-all duration-1000 drop-shadow-lg`}
               strokeLinecap="round"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               style={{
-                filter: `drop-shadow(0 0 12px currentColor)`,
+                filter: `drop-shadow(0 0 8px currentColor)`,
                 transition: "stroke-dashoffset 1s ease-in-out",
               }}
             />

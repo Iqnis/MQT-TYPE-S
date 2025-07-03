@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { RotateCcw, Play, Pause } from "lucide-react";
+import { RotateCcw, Play, Pause, Plus, Minus } from "lucide-react";
 
 export default function Index() {
   const [timeLeft, setTimeLeft] = useState(60);

@@ -147,7 +147,10 @@ export default function Index() {
         ></div>
 
         {/* Timer circle - Much larger */}
-        <div className="relative w-[32rem] h-[32rem] md:w-[40rem] md:h-[40rem] lg:w-[48rem] lg:h-[48rem]">
+        <div
+          className="relative w-[32rem] h-[32rem] md:w-[40rem] md:h-[40rem] lg:w-[48rem] lg:h-[48rem] cursor-pointer group"
+          onClick={toggleTimer}
+        >
           <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
             {/* Clock face background with subtle pattern */}
             <circle

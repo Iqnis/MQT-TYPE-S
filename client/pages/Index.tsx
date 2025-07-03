@@ -117,7 +117,8 @@ export default function Index() {
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-white/5 rounded-full blur-xl"></div>
       </div>
 
-      {/* Replay button */}
+      {/* Control buttons positioned around the circle */}
+      {/* Reset button - Left */}
       <button
         onClick={resetTimer}
         className={`absolute left-8 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group z-10`}
@@ -125,6 +126,45 @@ export default function Index() {
       >
         <RotateCcw
           className={`w-6 h-6 ${colors.text} group-hover:rotate-180 transition-transform duration-500`}
+        />
+      </button>
+
+      {/* Play/Pause button - Right */}
+      <button
+        onClick={toggleTimer}
+        className={`absolute right-8 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group z-10`}
+        aria-label={isRunning ? "Pause timer" : "Start timer"}
+      >
+        {isRunning ? (
+          <Pause
+            className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
+          />
+        ) : (
+          <Play
+            className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200 ml-1`}
+          />
+        )}
+      </button>
+
+      {/* Add time button - Top */}
+      <button
+        onClick={addTime}
+        className={`absolute top-8 left-1/2 -translate-x-1/2 p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group z-10`}
+        aria-label="Add 5 seconds"
+      >
+        <Plus
+          className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
+        />
+      </button>
+
+      {/* Subtract time button - Bottom */}
+      <button
+        onClick={subtractTime}
+        className={`absolute bottom-8 left-1/2 -translate-x-1/2 p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group z-10`}
+        aria-label="Remove 5 seconds"
+      >
+        <Minus
+          className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
         />
       </button>
 

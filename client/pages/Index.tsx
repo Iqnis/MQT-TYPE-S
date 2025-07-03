@@ -68,31 +68,17 @@ export default function Index() {
     };
   }, [isRunning, timeLeft]);
 
-  // Keyboard controls
-  const handleKeyPress = useCallback((event: KeyboardEvent) => {
-    if (event.code === "ArrowUp") {
-      event.preventDefault();
-      setTimeLeft((prev) => {
-        const newTime = prev + 5;
-        setInitialTime((prevInitial) => Math.max(prevInitial, newTime));
-        return newTime;
-      });
-    } else if (event.code === "ArrowDown") {
-      event.preventDefault();
-      setTimeLeft((prev) => Math.max(0, prev - 5));
-    } else if (event.code === "Space" || event.code === "Enter") {
-      event.preventDefault();
-      toggleTimer();
-    } else if (event.code === "KeyR") {
-      event.preventDefault();
-      resetTimer();
-    }
-  }, []);
+  const addTime = () => {
+    setTimeLeft((prev) => {
+      const newTime = prev + 5;
+      setInitialTime((prevInitial) => Math.max(prevInitial, newTime));
+      return newTime;
+    });
+  };
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [handleKeyPress]);
+  const subtractTime = () => {
+    setTimeLeft((prev) => Math.max(0, prev - 5));
+  };
 
   const toggleTimer = () => {
     if (isFinished) {

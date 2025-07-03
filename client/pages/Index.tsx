@@ -115,8 +115,8 @@ export default function Index() {
     playSound("subtract-time");
   };
 
-  // Progress calculation
-  const progress = ((initialTime - timeLeft) / initialTime) * 100;
+  // Progress calculation (depleting)
+  const progress = (timeLeft / initialTime) * 100;
   const circumference = 2 * Math.PI * 45;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 

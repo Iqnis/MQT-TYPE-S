@@ -284,13 +284,6 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Controls help */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
-        <div className={`text-sm ${colors.text} opacity-50 space-y-1`}>
-          <p></p>
-        </div>
-      </div>
-
       {/* Pulsing effect when timer ends */}
       {isFinished && (
         <div className="absolute inset-0 pointer-events-none">

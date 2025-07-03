@@ -102,5 +102,24 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .glow-effect {
+    filter: drop-shadow(0 0 20px currentColor);
   }
 }

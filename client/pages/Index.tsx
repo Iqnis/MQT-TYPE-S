@@ -92,7 +92,6 @@ export default function Index() {
       resetTimer();
     } else {
       setIsRunning(!isRunning);
-      playSound(isRunning ? "pause" : "start");
     }
   };
 
@@ -101,7 +100,6 @@ export default function Index() {
     setTimeLeft(60);
     setInitialTime(60);
     setIsFinished(false);
-    playSound("reset");
   };
 
   const addTime = () => {
@@ -110,12 +108,10 @@ export default function Index() {
       setInitialTime((prevInitial) => Math.max(prevInitial, newTime));
       return newTime;
     });
-    playSound("add-time");
   };
 
   const subtractTime = () => {
     setTimeLeft((prev) => Math.max(0, prev - 5));
-    playSound("subtract-time");
   };
 
   // Keyboard controls

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RotateCcw, Play, Pause, Plus, Minus, Eye, EyeOff } from "lucide-react";
+import { RotateCcw, Play, Pause, Plus, Minus } from "lucide-react";
 
 export default function Index() {
   // State

@@ -69,8 +69,12 @@ export default function Index() {
           if (time <= 1) {
             setIsRunning(false);
             setIsFinished(true);
-            playSound("timer-end");
+            playSound("time-up");
             return 0;
+          }
+          // Play warning sound when reaching 10 seconds
+          if (time === 11) {
+            playSound("warn-sound");
           }
           return time - 1;
         });

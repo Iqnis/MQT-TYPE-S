@@ -121,20 +121,28 @@ export default function Index() {
         case "Enter":
           event.preventDefault();
           toggleTimer();
+          showButtons();
           break;
         case "Space":
           event.preventDefault();
           resetTimer();
+          showButtons();
           break;
         case "Equal":
         case "NumpadAdd":
           event.preventDefault();
           addTime();
+          showButtons();
           break;
         case "Minus":
         case "NumpadSubtract":
           event.preventDefault();
           subtractTime();
+          showButtons();
+          break;
+        case "Backslash":
+          event.preventDefault();
+          showButtons();
           break;
       }
     };

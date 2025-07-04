@@ -20,15 +20,14 @@ export default function Index() {
     }
   };
 
-  // Timer phases
-  const getTimerPhase = (time: number, total: number) => {
-    const percentage = (time / total) * 100;
-    if (percentage <= 16.67) return "ending";
-    if (percentage <= 50) return "warning";
+  // Timer phases - based on absolute countdown values
+  const getTimerPhase = (time: number) => {
+    if (time <= 10) return "ending"; // Last 10 seconds
+    if (time <= 30) return "warning"; // Last 30 seconds
     return "normal";
   };
 
-  const phase = getTimerPhase(timeLeft, initialTime);
+  const phase = getTimerPhase(timeLeft);
 
   // Colors for each phase
   const getColors = (phase: string) => {

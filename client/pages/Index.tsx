@@ -168,78 +168,55 @@ export default function Index() {
 
       {/* Left control panel */}
       <div className="absolute left-8 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-10">
-        {/* Toggle visibility button - Always visible */}
+        {/* Play/Pause button */}
         <button
-          onMouseEnter={() => setShowButtons(false)}
-          onMouseLeave={() => setShowButtons(true)}
+          onClick={toggleTimer}
           className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
-          aria-label="Toggle controls visibility"
+          aria-label={isRunning ? "Pause timer" : "Start timer"}
         >
-          {showButtons ? (
-            <EyeOff
+          {isRunning ? (
+            <Pause
               className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
             />
           ) : (
-            <Eye
-              className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
+            <Play
+              className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200 ml-1`}
             />
           )}
         </button>
 
-        {/* Control buttons - Show/hide based on state */}
-        <div
-          className={`flex flex-col gap-4 transition-all duration-300 ${showButtons ? "opacity-100 transform translate-x-0" : "opacity-0 transform -translate-x-4 pointer-events-none"}`}
+        {/* Reset button */}
+        <button
+          onClick={resetTimer}
+          className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
+          aria-label="Reset timer to 60 seconds"
         >
-          {/* Play/Pause button */}
-          <button
-            onClick={toggleTimer}
-            className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
-            aria-label={isRunning ? "Pause timer" : "Start timer"}
-          >
-            {isRunning ? (
-              <Pause
-                className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
-              />
-            ) : (
-              <Play
-                className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200 ml-1`}
-              />
-            )}
-          </button>
+          <RotateCcw
+            className={`w-6 h-6 ${colors.text} group-hover:rotate-180 transition-transform duration-500`}
+          />
+        </button>
 
-          {/* Reset button */}
-          <button
-            onClick={resetTimer}
-            className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
-            aria-label="Reset timer to 60 seconds"
-          >
-            <RotateCcw
-              className={`w-6 h-6 ${colors.text} group-hover:rotate-180 transition-transform duration-500`}
-            />
-          </button>
+        {/* Add time button */}
+        <button
+          onClick={addTime}
+          className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
+          aria-label="Add 5 seconds"
+        >
+          <Plus
+            className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
+          />
+        </button>
 
-          {/* Add time button */}
-          <button
-            onClick={addTime}
-            className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
-            aria-label="Add 5 seconds"
-          >
-            <Plus
-              className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
-            />
-          </button>
-
-          {/* Subtract time button */}
-          <button
-            onClick={subtractTime}
-            className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
-            aria-label="Remove 5 seconds"
-          >
-            <Minus
-              className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
-            />
-          </button>
-        </div>
+        {/* Subtract time button */}
+        <button
+          onClick={subtractTime}
+          className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
+          aria-label="Remove 5 seconds"
+        >
+          <Minus
+            className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
+          />
+        </button>
       </div>
 
       {/* Main timer */}

@@ -181,10 +181,21 @@ export default function Index() {
       </div>
 
       {/* Left control panel */}
-      <div className="absolute left-8 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-10">
+      <div
+        className={`absolute left-8 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-10 transition-all duration-500 ${
+          buttonsVisible
+            ? "opacity-100 translate-x-0"
+            : "opacity-0 -translate-x-8 pointer-events-none"
+        }`}
+        onMouseEnter={showButtons}
+        onMouseMove={showButtons}
+      >
         {/* Play/Pause button */}
         <button
-          onClick={toggleTimer}
+          onClick={() => {
+            toggleTimer();
+            showButtons();
+          }}
           className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
           aria-label={isRunning ? "Pause timer" : "Start timer"}
         >
@@ -201,7 +212,10 @@ export default function Index() {
 
         {/* Reset button */}
         <button
-          onClick={resetTimer}
+          onClick={() => {
+            resetTimer();
+            showButtons();
+          }}
           className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
           aria-label="Reset timer to 60 seconds"
         >
@@ -212,7 +226,10 @@ export default function Index() {
 
         {/* Add time button */}
         <button
-          onClick={addTime}
+          onClick={() => {
+            addTime();
+            showButtons();
+          }}
           className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
           aria-label="Add 5 seconds"
         >
@@ -223,7 +240,10 @@ export default function Index() {
 
         {/* Subtract time button */}
         <button
-          onClick={subtractTime}
+          onClick={() => {
+            subtractTime();
+            showButtons();
+          }}
           className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
           aria-label="Remove 5 seconds"
         >

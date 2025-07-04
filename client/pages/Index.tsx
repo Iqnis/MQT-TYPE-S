@@ -142,7 +142,7 @@ export default function Index() {
           break;
         case "Backslash":
           event.preventDefault();
-          showButtons();
+          setButtonsVisible(!buttonsVisible);
           break;
       }
     };

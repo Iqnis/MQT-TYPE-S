@@ -114,6 +114,35 @@ export default function Index() {
     playSound("subtract-time");
   };
 
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      switch (event.code) {
+        case "Enter":
+          event.preventDefault();
+          toggleTimer();
+          break;
+        case "Space":
+          event.preventDefault();
+          resetTimer();
+          break;
+        case "Equal":
+        case "NumpadAdd":
+          event.preventDefault();
+          addTime();
+          break;
+        case "Minus":
+        case "NumpadSubtract":
+          event.preventDefault();
+          subtractTime();
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, []);
+
   // Progress calculation (depleting)
   const progress = (timeLeft / initialTime) * 100;
   const circumference = 2 * Math.PI * 45;

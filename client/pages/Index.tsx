@@ -9,13 +9,13 @@ export default function Index() {
   const [isFinished, setIsFinished] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(true);
 
-  // Sound effects (placeholder - replace with actual audio files)
+  // Sound effects for warning and time-up
   const playSound = (soundType: string) => {
     try {
-      // Placeholder for sound effects
-      // const audio = new Audio(`/sounds/${soundType}.mp3`);
-      // audio.play();
-      console.log(`Playing ${soundType} sound`);
+      const audio = new Audio(`/${soundType}.mp3`);
+      audio.play().catch(() => {
+        console.log(`Sound ${soundType} not available`);
+      });
     } catch (error) {
       console.log("Sound not available");
     }

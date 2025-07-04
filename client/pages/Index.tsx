@@ -143,6 +143,20 @@ export default function Index() {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [toggleTimer, resetTimer, addTime, subtractTime]);
 
+  // Auto-hide buttons after 5 seconds
+  useEffect(() => {
+    const hideTimer = setTimeout(() => {
+      setButtonsVisible(false);
+    }, 5000);
+
+    return () => clearTimeout(hideTimer);
+  }, [buttonsVisible]);
+
+  // Show buttons on any user interaction
+  const showButtons = () => {
+    setButtonsVisible(true);
+  };
+
   // Progress calculation (depleting)
   const progress = (timeLeft / initialTime) * 100;
   const circumference = 2 * Math.PI * 45;

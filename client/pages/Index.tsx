@@ -140,7 +140,7 @@ export default function Index() {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, []);
+  }, [toggleTimer, resetTimer, addTime, subtractTime]);
 
   // Progress calculation (depleting)
   const progress = (timeLeft / initialTime) * 100;

@@ -309,13 +309,14 @@ export default function Index() {
               stroke="currentColor"
               strokeWidth="2"
               fill="none"
-              className={`${colors.circle} transition-all duration-1000`}
+              className={`${colors.circle} transition-colors duration-1000`}
               strokeLinecap="round"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               style={{
                 filter: `drop-shadow(0 0 8px currentColor)`,
-                transition: "stroke-dashoffset 1s ease-in-out",
+                transition:
+                  "stroke-dashoffset 0.2s ease-out, stroke 1s ease-in-out",
               }}
             />
           </svg>

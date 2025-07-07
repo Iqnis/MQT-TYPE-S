@@ -168,7 +168,7 @@ export default function Index() {
   // Progress calculation (depleting)
   const progress = (timeLeft / initialTime) * 100;
   const circumference = 2 * Math.PI * 45;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const strokeDashoffset = -circumference * (1 - progress / 100);
 
   // Time formatting
   const formatTime = (seconds: number) => {

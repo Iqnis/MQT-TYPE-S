@@ -8,6 +8,7 @@ export default function Index() {
   const [isRunning, setIsRunning] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(true);
+  const [preciseTim0e, setPreciseTime] = useState(60);
 
   // Sound effects for warning and time-up
   const playSound = (soundType: string) => {

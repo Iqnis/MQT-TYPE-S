@@ -110,6 +110,7 @@ export default function Index() {
     setIsRunning(false);
     setTimeLeft(60);
     setInitialTime(60);
+    setPreciseTime(60);
     setIsFinished(false);
   };
 
@@ -117,12 +118,17 @@ export default function Index() {
     setTimeLeft((prev) => {
       const newTime = prev + 5;
       setInitialTime((prevInitial) => Math.max(prevInitial, newTime));
+      setPreciseTime(newTime);
       return newTime;
     });
   };
 
   const subtractTime = () => {
-    setTimeLeft((prev) => Math.max(0, prev - 5));
+    setTimeLeft((prev) => {
+      const newTime = Math.max(0, prev - 5);
+      setPreciseTime(newTime);
+      return newTime;
+    });
   };
 
   // Keyboard controls

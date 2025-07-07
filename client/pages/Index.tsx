@@ -60,32 +60,42 @@ export default function Index() {
 
   const colors = getColors(phase);
 
-  // Timer countdown logic
+  // Timer countdown logic with smooth movement
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
-    if (isRunning && timeLeft > 0) {
+    if (isRunning && preciseTime > 0) {
       interval = setInterval(() => {
-        setTimeLeft((time) => {
-          if (time <= 1) {
+        setPreciseTime((time) => {
+          const newTime = time - 0.1; // Decrease by 0.1 seconds
+
+          if (newTime <= 0) {
+            setTimeLeft(0);
             setIsRunning(false);
             setIsFinished(true);
             playSound("time-up");
             return 0;
           }
-          // Play warning sound when reaching 10 seconds
-          if (time === 11) {
-            playSound("warn-sound");
+
+          // Update displayed time (whole seconds)
+          const displayTime = Math.ceil(newTime);
+          if (displayTime !== timeLeft) {
+            setTimeLeft(displayTime);
+            // Play warning sound when reaching 10 seconds
+            if (displayTime === 10) {
+              playSound("warn-sound");
+            }
           }
-          return time - 1;
+
+          return newTime;
         });
-      }, 1000);
+      }, 100); // Update every 100ms for smooth animation
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isRunning, timeLeft]);
+  }, [isRunning, preciseTime, timeLeft]);
 
   // Control functions
   const toggleTimer = () => {

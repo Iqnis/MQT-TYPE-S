@@ -359,7 +359,7 @@ export default function Index() {
               style={{
                 filter: `drop-shadow(0 0 8px currentColor)`,
                 transition:
-                  "stroke-dashoffset 0.2s ease-out, stroke 1s ease-in-out",
+                  "stroke-dashoffset 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), stroke 1s ease-in-out",
               }}
             />
           </svg>

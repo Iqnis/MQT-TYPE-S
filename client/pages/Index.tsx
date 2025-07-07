@@ -73,7 +73,7 @@ export default function Index() {
             setTimeLeft(0);
             setIsRunning(false);
             setIsFinished(true);
-            playSound("time-up");
+            playSound("end-sound");
             return 0;
           }
 
@@ -83,7 +83,7 @@ export default function Index() {
             setTimeLeft(displayTime);
             // Play warning sound when reaching 10 seconds
             if (displayTime === 10) {
-              playSound("warn-sound");
+              playSound("warn-end-sound");
             }
           }
 

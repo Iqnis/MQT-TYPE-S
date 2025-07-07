@@ -182,8 +182,8 @@ export default function Index() {
     setButtonsVisible(true);
   };
 
-  // Progress calculation (depleting)
-  const progress = (timeLeft / initialTime) * 100;
+  // Progress calculation (depleting) - using precise time for smooth movement
+  const progress = (preciseTime / initialTime) * 100;
   const circumference = 2 * Math.PI * 45;
   const strokeDashoffset = -circumference * (1 - progress / 100);
 

@@ -174,6 +174,13 @@ export default function Index() {
           setButtonsVisible(!buttonsVisible);
           break;
       }
+
+      // CTRL key for settings
+      if (event.ctrlKey && event.code === "Period") {
+        event.preventDefault();
+        setShowSettings(!showSettings);
+        showButtons();
+      }
     };
 
     window.addEventListener("keydown", handleKeyPress);

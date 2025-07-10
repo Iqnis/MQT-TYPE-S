@@ -36,15 +36,6 @@ export default function Index() {
 
   // Colors for each phase with background theme support
   const getColors = (phase: string, theme: string) => {
-    const themes = {
-      slate: { normal: "emerald", bg: "slate" },
-      blue: { normal: "blue", bg: "blue" },
-      purple: { normal: "purple", bg: "purple" },
-      green: { normal: "green", bg: "green" },
-    };
-
-    const currentTheme = themes[theme as keyof typeof themes] || themes.slate;
-
     switch (phase) {
       case "ending":
         return {
@@ -61,12 +52,37 @@ export default function Index() {
           glow: "shadow-amber-500/50",
         };
       default:
-        return {
-          bg: `from-${currentTheme.bg}-900 via-${currentTheme.bg}-800 to-${currentTheme.bg}-900`,
-          circle: `stroke-${currentTheme.normal}-400`,
-          text: `text-${currentTheme.normal}-100`,
-          glow: `shadow-${currentTheme.normal}-500/50`,
-        };
+        // Background and circle colors based on theme
+        if (theme === "purple") {
+          return {
+            bg: "from-purple-900 via-purple-800 to-purple-900",
+            circle: "stroke-purple-400",
+            text: "text-purple-100",
+            glow: "shadow-purple-500/50",
+          };
+        } else if (theme === "green") {
+          return {
+            bg: "from-green-900 via-green-800 to-green-900",
+            circle: "stroke-green-400",
+            text: "text-green-100",
+            glow: "shadow-green-500/50",
+          };
+        } else if (theme === "white") {
+          return {
+            bg: "from-gray-100 via-gray-200 to-gray-100",
+            circle: "stroke-gray-700",
+            text: "text-gray-800",
+            glow: "shadow-gray-500/50",
+          };
+        } else {
+          // Default (current emerald/slate theme)
+          return {
+            bg: "from-slate-900 via-slate-800 to-slate-900",
+            circle: "stroke-emerald-400",
+            text: "text-emerald-100",
+            glow: "shadow-emerald-500/50",
+          };
+        }
     }
   };
 

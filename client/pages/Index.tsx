@@ -376,24 +376,27 @@ export default function Index() {
               >
                 Background Theme
               </label>
-              <div className="grid grid-cols-2 gap-2">
-                {["slate", "blue", "purple", "green"].map((theme) => (
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { key: "slate", name: "Default", color: "emerald" },
+                  { key: "purple", name: "Purple", color: "purple" },
+                  { key: "green", name: "Green", color: "green" },
+                  { key: "white", name: "White", color: "gray" },
+                ].map((theme) => (
                   <button
-                    key={theme}
-                    onClick={() => setBackgroundTheme(theme)}
+                    key={theme.key}
+                    onClick={() => setBackgroundTheme(theme.key)}
                     className={`p-3 rounded-lg border transition-all ${
-                      backgroundTheme === theme
+                      backgroundTheme === theme.key
                         ? "border-white/40 bg-white/20"
                         : "border-white/20 bg-white/5 hover:bg-white/10"
                     }`}
                   >
                     <div
-                      className={`w-4 h-4 rounded-full mx-auto bg-${theme}-400`}
+                      className={`w-4 h-4 rounded-full mx-auto bg-${theme.color}-400`}
                     ></div>
-                    <span
-                      className={`text-xs ${colors.text} mt-1 block capitalize`}
-                    >
-                      {theme}
+                    <span className={`text-xs ${colors.text} mt-1 block`}>
+                      {theme.name}
                     </span>
                   </button>
                 ))}

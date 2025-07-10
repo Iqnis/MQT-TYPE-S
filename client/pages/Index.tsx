@@ -70,7 +70,7 @@ export default function Index() {
     }
   };
 
-  const colors = getColors(phase);
+  const colors = getColors(phase, backgroundTheme);
 
   // Timer countdown logic with smooth movement
   useEffect(() => {

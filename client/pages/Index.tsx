@@ -290,6 +290,95 @@ export default function Index() {
         </button>
       </div>
 
+      {/* Settings button */}
+      <button
+        onClick={() => {
+          setShowSettings(true);
+          showButtons();
+        }}
+        className={`absolute right-8 top-8 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group z-10`}
+        aria-label="Settings"
+      >
+        <Settings
+          className={`w-5 h-5 ${colors.text} group-hover:rotate-90 transition-transform duration-300`}
+        />
+      </button>
+
+      {/* Settings popup */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 w-80 max-w-sm mx-4">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className={`text-xl font-semibold ${colors.text}`}>Settings</h2>
+              <button
+                onClick={() => setShowSettings(false)}
+                className={`p-2 rounded-full hover:bg-white/10 transition-colors ${colors.text}`}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Timer Duration Setting */}
+            <div className="mb-6">
+              <label className={`block text-sm font-medium ${colors.text} mb-3`}>
+                Default Timer: {Math.floor(defaultTimer / 60)}:{(defaultTimer % 60).toString().padStart(2, '0')}
+              </label>
+              <input
+                type="range"
+                min="5"
+                max="300"
+                step="5"
+                value={defaultTimer}
+                onChange={(e) => setDefaultTimer(Number(e.target.value))}
+                className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+              />
+              <div className={`flex justify-between text-xs ${colors.text} opacity-60 mt-1`}>
+                <span>5s</span>
+                <span>5m</span>
+              </div>
+            </div>
+
+            {/* Background Theme */}
+            <div className="mb-6">
+              <label className={`block text-sm font-medium ${colors.text} mb-3`}>
+                Background Theme
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {["slate", "blue", "purple", "green"].map((theme) => (
+                  <button
+                    key={theme}
+                    onClick={() => setBackgroundTheme(theme)}
+                    className={`p-3 rounded-lg border transition-all ${
+                      backgroundTheme === theme
+                        ? "border-white/40 bg-white/20"
+                        : "border-white/20 bg-white/5 hover:bg-white/10"
+                    }`}
+                  >
+                    <div className={`w-4 h-4 rounded-full mx-auto bg-${theme}-400`}></div>
+                    <span className={`text-xs ${colors.text} mt-1 block capitalize`}>
+                      {theme}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Apply Button */}
+            <button
+              onClick={() => {
+                resetTimer();
+                setShowSettings(false);
+              }}
+              className={`w-full py-3 rounded-lg bg-white/20 border border-white/30 hover:bg-white/30 transition-all ${colors.text} font-medium`}
+            >
+              Apply & Reset Timer
+            </button>
+          </div>
+        </div>
+      )}
+      </div>
+
       {/* Main timer */}
       <div className="relative">
         {/* Outer glow */}

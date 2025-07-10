@@ -34,8 +34,17 @@ export default function Index() {
 
   const phase = getTimerPhase(timeLeft);
 
-  // Colors for each phase
-  const getColors = (phase: string) => {
+  // Colors for each phase with background theme support
+  const getColors = (phase: string, theme: string) => {
+    const themes = {
+      slate: { normal: "emerald", bg: "slate" },
+      blue: { normal: "blue", bg: "blue" },
+      purple: { normal: "purple", bg: "purple" },
+      green: { normal: "green", bg: "green" },
+    };
+
+    const currentTheme = themes[theme as keyof typeof themes] || themes.slate;
+
     switch (phase) {
       case "ending":
         return {
@@ -53,10 +62,10 @@ export default function Index() {
         };
       default:
         return {
-          bg: "from-slate-900 via-slate-800 to-slate-900",
-          circle: "stroke-emerald-400",
-          text: "text-emerald-100",
-          glow: "shadow-emerald-500/50",
+          bg: `from-${currentTheme.bg}-900 via-${currentTheme.bg}-800 to-${currentTheme.bg}-900`,
+          circle: `stroke-${currentTheme.normal}-400`,
+          text: `text-${currentTheme.normal}-100`,
+          glow: `shadow-${currentTheme.normal}-500/50`,
         };
     }
   };

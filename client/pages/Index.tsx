@@ -310,7 +310,9 @@ export default function Index() {
           <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 w-80 max-w-sm mx-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className={`text-xl font-semibold ${colors.text}`}>Settings</h2>
+              <h2 className={`text-xl font-semibold ${colors.text}`}>
+                Settings
+              </h2>
               <button
                 onClick={() => setShowSettings(false)}
                 className={`p-2 rounded-full hover:bg-white/10 transition-colors ${colors.text}`}
@@ -321,8 +323,11 @@ export default function Index() {
 
             {/* Timer Duration Setting */}
             <div className="mb-6">
-              <label className={`block text-sm font-medium ${colors.text} mb-3`}>
-                Default Timer: {Math.floor(defaultTimer / 60)}:{(defaultTimer % 60).toString().padStart(2, '0')}
+              <label
+                className={`block text-sm font-medium ${colors.text} mb-3`}
+              >
+                Default Timer: {Math.floor(defaultTimer / 60)}:
+                {(defaultTimer % 60).toString().padStart(2, "0")}
               </label>
               <input
                 type="range"
@@ -333,7 +338,9 @@ export default function Index() {
                 onChange={(e) => setDefaultTimer(Number(e.target.value))}
                 className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
               />
-              <div className={`flex justify-between text-xs ${colors.text} opacity-60 mt-1`}>
+              <div
+                className={`flex justify-between text-xs ${colors.text} opacity-60 mt-1`}
+              >
                 <span>5s</span>
                 <span>5m</span>
               </div>
@@ -341,7 +348,9 @@ export default function Index() {
 
             {/* Background Theme */}
             <div className="mb-6">
-              <label className={`block text-sm font-medium ${colors.text} mb-3`}>
+              <label
+                className={`block text-sm font-medium ${colors.text} mb-3`}
+              >
                 Background Theme
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -355,8 +364,12 @@ export default function Index() {
                         : "border-white/20 bg-white/5 hover:bg-white/10"
                     }`}
                   >
-                    <div className={`w-4 h-4 rounded-full mx-auto bg-${theme}-400`}></div>
-                    <span className={`text-xs ${colors.text} mt-1 block capitalize`}>
+                    <div
+                      className={`w-4 h-4 rounded-full mx-auto bg-${theme}-400`}
+                    ></div>
+                    <span
+                      className={`text-xs ${colors.text} mt-1 block capitalize`}
+                    >
                       {theme}
                     </span>
                   </button>
@@ -377,7 +390,6 @@ export default function Index() {
           </div>
         </div>
       )}
-      </div>
 
       {/* Main timer */}
       <div className="relative">

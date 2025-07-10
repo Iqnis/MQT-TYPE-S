@@ -120,9 +120,9 @@ export default function Index() {
 
   const resetTimer = () => {
     setIsRunning(false);
-    setTimeLeft(60);
-    setInitialTime(60);
-    setPreciseTime(60);
+    setTimeLeft(defaultTimer);
+    setInitialTime(defaultTimer);
+    setPreciseTime(defaultTimer);
     setIsFinished(false);
   };
 

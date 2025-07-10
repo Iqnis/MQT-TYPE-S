@@ -295,21 +295,21 @@ export default function Index() {
             className={`w-6 h-6 ${colors.text} group-hover:scale-110 transition-transform duration-200`}
           />
         </button>
-      </div>
 
-      {/* Settings button */}
-      <button
-        onClick={() => {
-          setShowSettings(true);
-          showButtons();
-        }}
-        className={`absolute right-8 top-8 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group z-10`}
-        aria-label="Settings"
-      >
-        <Settings
-          className={`w-5 h-5 ${colors.text} group-hover:rotate-90 transition-transform duration-300`}
-        />
-      </button>
+        {/* Settings button */}
+        <button
+          onClick={() => {
+            setShowSettings(true);
+            showButtons();
+          }}
+          className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
+          aria-label="Settings"
+        >
+          <Settings
+            className={`w-6 h-6 ${colors.text} group-hover:rotate-90 transition-transform duration-300`}
+          />
+        </button>
+      </div>
 
       {/* Settings popup */}
       {showSettings && (

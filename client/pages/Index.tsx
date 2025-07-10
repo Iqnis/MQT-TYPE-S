@@ -263,8 +263,8 @@ export default function CircularStopwatch() {
           break;
       }
 
-      // CTRL + S for settings
-      if (event.ctrlKey && event.code === "KeyS") {
+      // Just CTRL key for settings
+      if (event.code === "ControlLeft" || event.code === "ControlRight") {
         event.preventDefault();
         setShowSettings(!showSettings);
         showButtons();

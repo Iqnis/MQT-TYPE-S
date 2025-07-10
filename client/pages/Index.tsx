@@ -9,6 +9,9 @@ export default function Index() {
   const [isFinished, setIsFinished] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [preciseTime, setPreciseTime] = useState(60);
+  const [showSettings, setShowSettings] = useState(false);
+  const [defaultTimer, setDefaultTimer] = useState(60);
+  const [backgroundTheme, setBackgroundTheme] = useState("slate");
 
   // Sound effects for warning and time-up
   const playSound = (soundType: string) => {

@@ -27,6 +27,15 @@ const CONFIG = {
     FINISHED: "end-sound",
   },
 
+  // Keyboard shortcuts
+  SHORTCUTS: {
+    PLAY_PAUSE: "Enter",
+    RESET: "Space",
+    ADD_TIME: "+/-",
+    TOGGLE_BUTTONS: "\\",
+    SETTINGS: "Ctrl+S",
+  },
+
   // Available themes
   THEMES: [
     { key: "slate", name: "Default", color: "emerald" },

@@ -254,8 +254,8 @@ export default function CircularStopwatch() {
           break;
       }
 
-      // CTRL key for settings
-      if (event.ctrlKey && event.code === "Period") {
+      // CTRL + S for settings
+      if (event.ctrlKey && event.code === "KeyS") {
         event.preventDefault();
         setShowSettings(!showSettings);
         showButtons();

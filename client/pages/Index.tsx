@@ -1,19 +1,61 @@
 import { useState, useEffect } from "react";
 import { RotateCcw, Play, Pause, Plus, Minus, Settings, X } from "lucide-react";
 
-export default function Index() {
-  // State
-  const [timeLeft, setTimeLeft] = useState(60);
-  const [initialTime, setInitialTime] = useState(60);
+// ========================================
+// CONFIGURATION CONSTANTS (Edit these for easy customization)
+// ========================================
+const CONFIG = {
+  // Timer settings
+  DEFAULT_TIMER: 60, // Default timer in seconds
+  TIMER_MIN: 5, // Minimum timer (seconds)
+  TIMER_MAX: 300, // Maximum timer (5 minutes)
+  TIMER_STEP: 5, // Step increment (seconds)
+  UPDATE_INTERVAL: 100, // Progress update frequency (ms)
+  TIMER_DECREMENT: 0.1, // Timer decrease per interval (seconds)
+
+  // Phase thresholds
+  WARNING_THRESHOLD: 30, // Warning phase trigger (seconds)
+  ENDING_THRESHOLD: 10, // Ending phase trigger (seconds)
+
+  // UI settings
+  AUTO_HIDE_DELAY: 5000, // Button auto-hide delay (ms)
+  CIRCLE_RADIUS: 45, // Progress circle radius
+
+  // Sound files (in public folder)
+  SOUNDS: {
+    WARNING: "warn-end-sound",
+    FINISHED: "end-sound",
+  },
+
+  // Available themes
+  THEMES: [
+    { key: "slate", name: "Default", color: "emerald" },
+    { key: "purple", name: "Purple", color: "purple" },
+    { key: "green", name: "Green", color: "green" },
+    { key: "white", name: "White", color: "gray" },
+  ],
+};
+
+// ========================================
+// MAIN COMPONENT
+// ========================================
+export default function CircularStopwatch() {
+  // State management
+  const [timeLeft, setTimeLeft] = useState(CONFIG.DEFAULT_TIMER);
+  const [initialTime, setInitialTime] = useState(CONFIG.DEFAULT_TIMER);
   const [isRunning, setIsRunning] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(true);
-  const [preciseTime, setPreciseTime] = useState(60);
+  const [preciseTime, setPreciseTime] = useState(CONFIG.DEFAULT_TIMER);
   const [showSettings, setShowSettings] = useState(false);
-  const [defaultTimer, setDefaultTimer] = useState(60);
+  const [defaultTimer, setDefaultTimer] = useState(CONFIG.DEFAULT_TIMER);
   const [backgroundTheme, setBackgroundTheme] = useState("slate");
 
-  // Sound effects for warning and time-up
+  // ========================================
+  // UTILITY FUNCTIONS
+  // ========================================
+
+  // Sound effects
   const playSound = (soundType: string) => {
     try {
       const audio = new Audio(`/${soundType}.mp3`);
@@ -25,107 +67,83 @@ export default function Index() {
     }
   };
 
-  // Timer phases - based on absolute countdown values
+  // Timer phase detection
   const getTimerPhase = (time: number) => {
-    if (time <= 10) return "ending"; // Last 10 seconds
-    if (time <= 30) return "warning"; // Last 30 seconds
+    if (time <= CONFIG.ENDING_THRESHOLD) return "ending";
+    if (time <= CONFIG.WARNING_THRESHOLD) return "warning";
     return "normal";
   };
 
-  const phase = getTimerPhase(timeLeft);
-
-  // Colors for each phase with background theme support
+  // Color theme generator
   const getColors = (phase: string, theme: string) => {
-    switch (phase) {
-      case "ending":
-        return {
-          bg: "from-red-900 via-red-800 to-red-900",
-          circle: "stroke-red-400",
-          text: "text-red-100",
-          glow: "shadow-red-500/50",
-        };
-      case "warning":
-        return {
-          bg: "from-amber-900 via-orange-800 to-amber-900",
-          circle: "stroke-amber-400",
-          text: "text-amber-100",
-          glow: "shadow-amber-500/50",
-        };
-      default:
-        // Background and circle colors based on theme
-        if (theme === "purple") {
-          return {
-            bg: "from-purple-900 via-purple-800 to-purple-900",
-            circle: "stroke-purple-400",
-            text: "text-purple-100",
-            glow: "shadow-purple-500/50",
-          };
-        } else if (theme === "green") {
-          return {
-            bg: "from-green-900 via-green-800 to-green-900",
-            circle: "stroke-green-400",
-            text: "text-green-100",
-            glow: "shadow-green-500/50",
-          };
-        } else if (theme === "white") {
-          return {
-            bg: "from-gray-100 via-gray-200 to-gray-100",
-            circle: "stroke-gray-700",
-            text: "text-gray-800",
-            glow: "shadow-gray-500/50",
-          };
-        } else {
-          // Default (current emerald/slate theme)
-          return {
-            bg: "from-slate-900 via-slate-800 to-slate-900",
-            circle: "stroke-emerald-400",
-            text: "text-emerald-100",
-            glow: "shadow-emerald-500/50",
-          };
-        }
+    // Warning and ending phases (always red/amber)
+    if (phase === "ending") {
+      return {
+        bg: "from-red-900 via-red-800 to-red-900",
+        circle: "stroke-red-400",
+        text: "text-red-100",
+        glow: "shadow-red-500/50",
+      };
     }
+    if (phase === "warning") {
+      return {
+        bg: "from-amber-900 via-orange-800 to-amber-900",
+        circle: "stroke-amber-400",
+        text: "text-amber-100",
+        glow: "shadow-amber-500/50",
+      };
+    }
+
+    // Normal phase colors based on theme
+    const themeColors = {
+      purple: {
+        bg: "from-purple-900 via-purple-800 to-purple-900",
+        circle: "stroke-purple-400",
+        text: "text-purple-100",
+        glow: "shadow-purple-500/50",
+      },
+      green: {
+        bg: "from-green-900 via-green-800 to-green-900",
+        circle: "stroke-green-400",
+        text: "text-green-100",
+        glow: "shadow-green-500/50",
+      },
+      white: {
+        bg: "from-gray-100 via-gray-200 to-gray-100",
+        circle: "stroke-gray-700",
+        text: "text-gray-800",
+        glow: "shadow-gray-500/50",
+      },
+      slate: {
+        bg: "from-slate-900 via-slate-800 to-slate-900",
+        circle: "stroke-emerald-400",
+        text: "text-emerald-100",
+        glow: "shadow-emerald-500/50",
+      },
+    };
+
+    return themeColors[theme as keyof typeof themeColors] || themeColors.slate;
   };
 
-  const colors = getColors(phase, backgroundTheme);
+  // Time formatting
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
 
-  // Timer countdown logic with smooth movement
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+  // Progress calculation
+  const calculateProgress = () => {
+    const progress = (preciseTime / initialTime) * 100;
+    const circumference = 2 * Math.PI * CONFIG.CIRCLE_RADIUS;
+    const strokeDashoffset = -circumference * (1 - progress / 100);
+    return { progress, circumference, strokeDashoffset };
+  };
 
-    if (isRunning && preciseTime > 0) {
-      interval = setInterval(() => {
-        setPreciseTime((time) => {
-          const newTime = time - 0.1; // Decrease by 0.1 seconds
+  // ========================================
+  // CONTROL FUNCTIONS
+  // ========================================
 
-          if (newTime <= 0) {
-            setTimeLeft(0);
-            setIsRunning(false);
-            setIsFinished(true);
-            playSound("end-sound");
-            return 0;
-          }
-
-          // Update displayed time (whole seconds)
-          const displayTime = Math.ceil(newTime);
-          if (displayTime !== timeLeft) {
-            setTimeLeft(displayTime);
-            // Play warning sound when reaching 10 seconds
-            if (displayTime === 10) {
-              playSound("warn-end-sound");
-            }
-          }
-
-          return newTime;
-        });
-      }, 100); // Update every 100ms for smooth animation
-    }
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isRunning, preciseTime, timeLeft]);
-
-  // Control functions
   const toggleTimer = () => {
     if (isFinished) {
       resetTimer();
@@ -144,7 +162,7 @@ export default function Index() {
 
   const addTime = () => {
     setTimeLeft((prev) => {
-      const newTime = prev + 5;
+      const newTime = prev + CONFIG.TIMER_STEP;
       setInitialTime((prevInitial) => Math.max(prevInitial, newTime));
       setPreciseTime(newTime);
       return newTime;
@@ -153,11 +171,56 @@ export default function Index() {
 
   const subtractTime = () => {
     setTimeLeft((prev) => {
-      const newTime = Math.max(0, prev - 5);
+      const newTime = Math.max(0, prev - CONFIG.TIMER_STEP);
       setPreciseTime(newTime);
       return newTime;
     });
   };
+
+  const showButtons = () => {
+    setButtonsVisible(true);
+  };
+
+  // ========================================
+  // EFFECTS
+  // ========================================
+
+  // Timer countdown logic
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
+    if (isRunning && preciseTime > 0) {
+      interval = setInterval(() => {
+        setPreciseTime((time) => {
+          const newTime = time - CONFIG.TIMER_DECREMENT;
+
+          if (newTime <= 0) {
+            setTimeLeft(0);
+            setIsRunning(false);
+            setIsFinished(true);
+            playSound(CONFIG.SOUNDS.FINISHED);
+            return 0;
+          }
+
+          // Update displayed time (whole seconds)
+          const displayTime = Math.ceil(newTime);
+          if (displayTime !== timeLeft) {
+            setTimeLeft(displayTime);
+            // Play warning sound at threshold
+            if (displayTime === CONFIG.ENDING_THRESHOLD) {
+              playSound(CONFIG.SOUNDS.WARNING);
+            }
+          }
+
+          return newTime;
+        });
+      }, CONFIG.UPDATE_INTERVAL);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isRunning, preciseTime, timeLeft]);
 
   // Keyboard controls
   useEffect(() => {
@@ -201,33 +264,35 @@ export default function Index() {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [toggleTimer, resetTimer, addTime, subtractTime]);
+  }, [
+    toggleTimer,
+    resetTimer,
+    addTime,
+    subtractTime,
+    buttonsVisible,
+    showSettings,
+  ]);
 
-  // Auto-hide buttons after 5 seconds
+  // Auto-hide buttons
   useEffect(() => {
     const hideTimer = setTimeout(() => {
       setButtonsVisible(false);
-    }, 5000);
+    }, CONFIG.AUTO_HIDE_DELAY);
 
     return () => clearTimeout(hideTimer);
   }, [buttonsVisible]);
 
-  // Show buttons on any user interaction
-  const showButtons = () => {
-    setButtonsVisible(true);
-  };
+  // ========================================
+  // CALCULATED VALUES
+  // ========================================
 
-  // Progress calculation (depleting) - using precise time for smooth movement
-  const progress = (preciseTime / initialTime) * 100;
-  const circumference = 2 * Math.PI * 45;
-  const strokeDashoffset = -circumference * (1 - progress / 100);
+  const phase = getTimerPhase(timeLeft);
+  const colors = getColors(phase, backgroundTheme);
+  const { progress, circumference, strokeDashoffset } = calculateProgress();
 
-  // Time formatting
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  };
+  // ========================================
+  // RENDER
+  // ========================================
 
   return (
     <div
@@ -277,7 +342,7 @@ export default function Index() {
             showButtons();
           }}
           className={`p-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl group`}
-          aria-label="Reset timer to 60 seconds"
+          aria-label="Reset timer"
         >
           <RotateCcw
             className={`w-6 h-6 ${colors.text} group-hover:rotate-180 transition-transform duration-500`}
@@ -349,23 +414,22 @@ export default function Index() {
               <label
                 className={`block text-sm font-medium ${colors.text} mb-3`}
               >
-                Default Timer: {Math.floor(defaultTimer / 60)}:
-                {(defaultTimer % 60).toString().padStart(2, "0")}
+                Default Timer: {formatTime(defaultTimer)}
               </label>
               <input
                 type="range"
-                min="5"
-                max="300"
-                step="5"
+                min={CONFIG.TIMER_MIN}
+                max={CONFIG.TIMER_MAX}
+                step={CONFIG.TIMER_STEP}
                 value={defaultTimer}
                 onChange={(e) => setDefaultTimer(Number(e.target.value))}
-                className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+                className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
               />
               <div
                 className={`flex justify-between text-xs ${colors.text} opacity-60 mt-1`}
               >
-                <span>5s</span>
-                <span>5m</span>
+                <span>{CONFIG.TIMER_MIN}s</span>
+                <span>{CONFIG.TIMER_MAX / 60}m</span>
               </div>
             </div>
 
@@ -377,12 +441,7 @@ export default function Index() {
                 Background Theme
               </label>
               <div className="grid grid-cols-3 gap-2">
-                {[
-                  { key: "slate", name: "Default", color: "emerald" },
-                  { key: "purple", name: "Purple", color: "purple" },
-                  { key: "green", name: "Green", color: "green" },
-                  { key: "white", name: "White", color: "gray" },
-                ].map((theme) => (
+                {CONFIG.THEMES.map((theme) => (
                   <button
                     key={theme.key}
                     onClick={() => setBackgroundTheme(theme.key)}
@@ -493,7 +552,7 @@ export default function Index() {
             <circle
               cx="50"
               cy="50"
-              r="45"
+              r={CONFIG.CIRCLE_RADIUS}
               stroke="currentColor"
               strokeWidth="2"
               fill="none"
@@ -504,7 +563,7 @@ export default function Index() {
             <circle
               cx="50"
               cy="50"
-              r="45"
+              r={CONFIG.CIRCLE_RADIUS}
               stroke="currentColor"
               strokeWidth="2"
               fill="none"

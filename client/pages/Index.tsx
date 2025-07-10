@@ -33,7 +33,7 @@ const CONFIG = {
     RESET: "Space",
     ADD_TIME: "+/-",
     TOGGLE_BUTTONS: "\\",
-    SETTINGS: "Ctrl+S",
+    SETTINGS: "Ctrl",
   },
 
   // Available themes

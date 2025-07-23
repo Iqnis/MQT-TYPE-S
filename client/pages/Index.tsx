@@ -482,6 +482,21 @@ export default function CircularStopwatch() {
               </div>
             </div>
 
+            {/* Fullscreen Toggle */}
+            <div className="mb-6">
+              <label
+                className={`block text-sm font-medium ${colors.text} mb-3`}
+              >
+                Fullscreen Mode
+              </label>
+              <button
+                onClick={handleFullscreenToggle}
+                className={`w-full py-3 rounded-lg bg-white/20 border border-white/30 hover:bg-white/30 transition-all ${colors.text} font-medium`}
+              >
+                {fullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+              </button>
+            </div>
+
             {/* Apply Button */}
             <button
               onClick={() => {

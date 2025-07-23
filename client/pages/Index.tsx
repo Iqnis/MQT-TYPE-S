@@ -7,8 +7,8 @@ import { RotateCcw, Play, Pause, Plus, Minus, Settings, X } from "lucide-react";
 const CONFIG = {
   // Timer settings
   DEFAULT_TIMER: 60, // Default timer in seconds
-  TIMER_MIN: 5, // Minimum timer (seconds)
-  TIMER_MAX: 300, // Maximum timer (5 minutes)
+  TIMER_MIN: 60, // Minimum timer (seconds)
+  TIMER_MAX: 59940, // Maximum timer (5 minutes)
   TIMER_STEP: 5, // Step increment (seconds)
   UPDATE_INTERVAL: 100, // Progress update frequency (ms)
   TIMER_DECREMENT: 0.1, // Timer decrease per interval (seconds)

@@ -59,7 +59,7 @@ export default function CircularStopwatch() {
   const [showSettings, setShowSettings] = useState(false);
   const [defaultTimer, setDefaultTimer] = useState(CONFIG.DEFAULT_TIMER);
   const [backgroundTheme, setBackgroundTheme] = useState("slate");
-
+  const [fullscreen, setFullscreen] = useState(false);
   // ========================================
   // UTILITY FUNCTIONS
   // ========================================

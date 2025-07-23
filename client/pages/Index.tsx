@@ -624,7 +624,7 @@ export default function CircularStopwatch() {
           {/* Center time display */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className={`text-8xl md:text-9xl lg:text-[8rem] font-mono ${colors.text} transition-colors duration-1000 text-center leading-none`}
+              className={`text-30xl md:text-30xl lg:text-[30rem] font-mono ${colors.text} transition-colors duration-1000 text-center leading-none`}
               style={{ fontWeight: 400 }}
             >
               {formatTime(timeLeft)}

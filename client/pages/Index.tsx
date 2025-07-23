@@ -60,7 +60,7 @@ export default function CircularStopwatch() {
   const [defaultTimer, setDefaultTimer] = useState(CONFIG.DEFAULT_TIMER);
   const [backgroundTheme, setBackgroundTheme] = useState("slate");
   const [fullscreen, setFullscreen] = useState(false);
-  
+
   // ========================================
   // UTILITY FUNCTIONS
   // ========================================
@@ -148,6 +148,16 @@ export default function CircularStopwatch() {
     const circumference = 2 * Math.PI * CONFIG.CIRCLE_RADIUS;
     const strokeDashoffset = -circumference * (1 - progress / 100);
     return { progress, circumference, strokeDashoffset };
+  };
+
+  // Fullscreen toggle
+  const handleFullscreenToggle = () => {
+    setFullscreen(!fullscreen);
+    if (fullscreen) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
   };
 
   // ========================================

@@ -139,7 +139,14 @@ export default function CircularStopwatch() {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+
+    if (mins > 1) {
+      return `${mins}`;
+    } else if (mins === 1) {
+      return `1`;
+    } else {
+      return `${secs}`;
+    }
   };
 
   // Progress calculation

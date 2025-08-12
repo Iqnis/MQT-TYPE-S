@@ -735,8 +735,58 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
                     </>
                   )}
                 </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`text-2xl ${CONFIG.TIMER_FONTS.find(f => f.key === timerFont)?.class || 'font-sans'} ${colors.text} text-center`}>
+                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                  <div
+                    className={`${CONFIG.TIMER_FONTS.find(f => f.key === timerFont)?.class || 'font-sans'} ${colors.text} text-center leading-none`}
+                    style={{
+                      fontSize: (() => {
+                        const totalSecs = Math.floor(defaultTimer);
+                        const hours = Math.floor(totalSecs / 3600);
+                        const mins = Math.floor((totalSecs % 3600) / 60);
+                        const secs = totalSecs % 60;
+
+                        let timeText = "";
+                        switch (timerFormat) {
+                          case "MM":
+                            timeText = `${Math.ceil(defaultTimer / 60)}`;
+                            break;
+                          case "MM:SS":
+                            timeText = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+                            break;
+                          case "HH:MM:SS":
+                            timeText = `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+                            break;
+                          case "HhMmSs":
+                            if (hours > 0) {
+                              timeText = `${hours}h${mins}m${secs}s`;
+                            } else if (mins > 0) {
+                              timeText = `${mins}m${secs}s`;
+                            } else {
+                              timeText = `${secs}s`;
+                            }
+                            break;
+                          default:
+                            timeText = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+                        }
+
+                        // Scale font size for preview (smaller than main display)
+                        const textLength = timeText.length;
+                        if (timerFormat === "MM") return textLength <= 2 ? '24px' : '20px';
+                        if (timerFormat === "MM:SS") return '18px';
+                        if (timerFormat === "HH:MM:SS") return '16px';
+                        if (timerFormat === "HhMmSs") {
+                          if (textLength <= 3) return '20px';
+                          if (textLength <= 6) return '16px';
+                          return '14px';
+                        }
+                        return '18px';
+                      })(),
+                      maxWidth: '90%',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
                     {(() => {
                       const totalSecs = Math.floor(defaultTimer);
                       const hours = Math.floor(totalSecs / 3600);

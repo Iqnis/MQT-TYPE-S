@@ -733,7 +733,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
                   )}
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`text-2xl font-mono ${colors.text} text-center`}>
+                  <div className={`text-2xl ${CONFIG.TIMER_FONTS.find(f => f.key === timerFont)?.class || 'font-sans'} ${colors.text} text-center`}>
                     {(() => {
                       const totalSecs = Math.floor(defaultTimer);
                       const hours = Math.floor(totalSecs / 3600);

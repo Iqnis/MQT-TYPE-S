@@ -176,16 +176,30 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
     return themeColors[theme as keyof typeof themeColors] || themeColors.slate;
   };
 
-  // Time formatting
+  // Time formatting based on selected format
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
+    const totalSecs = Math.floor(seconds);
+    const hours = Math.floor(totalSecs / 3600);
+    const mins = Math.floor((totalSecs % 3600) / 60);
+    const secs = totalSecs % 60;
 
-    if (mins > 1) {
-      return `${mins}`;
-    } else if (mins === 1) {
-      return `1`;
-    } else {
-      return `${seconds % 60}`;
+    switch (timerFormat) {
+      case "MM":
+        return `${Math.ceil(seconds / 60)}`;
+      case "MM:SS":
+        return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+      case "HH:MM:SS":
+        return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+      case "HhMmSs":
+        if (hours > 0) {
+          return `${hours}h${mins}m${secs}s`;
+        } else if (mins > 0) {
+          return `${mins}m${secs}s`;
+        } else {
+          return `${secs}s`;
+        }
+      default:
+        return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     }
   };
 

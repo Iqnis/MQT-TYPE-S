@@ -299,7 +299,7 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
       // CTRL key for settings (navigate to settings page)
       if (event.code === "ControlLeft" || event.code === "ControlRight") {
         event.preventDefault();
-        window.location.href = "/settings";
+        onBackToSettings();
       }
     };
 

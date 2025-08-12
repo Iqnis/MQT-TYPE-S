@@ -76,6 +76,18 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
   const [soundEnabled] = useState(settings.soundEnabled);
   const [showProgress] = useState(settings.showProgress);
   const [timerFormat] = useState(settings.timerFormat);
+  const [timerFont] = useState(settings.timerFont);
+
+  // Font configuration (without slashed zeros)
+  const getFontClass = (fontKey: string) => {
+    const fontMap = {
+      inter: "font-sans",
+      roboto: "font-mono",
+      system: "font-system",
+      arial: "font-arial"
+    };
+    return fontMap[fontKey as keyof typeof fontMap] || "font-sans";
+  };
 
   // ========================================
   // UTILITY FUNCTIONS

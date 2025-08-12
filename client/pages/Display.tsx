@@ -536,8 +536,12 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
                 className={`${getFontClass(timerFont)} ${colors.timerText} transition-colors duration-1000 text-center leading-none`}
                 style={{
                   fontWeight: 400,
-                  fontSize: formatTime(timeLeft).length >= 3 ? '18vw' : '30vw',
+                  fontSize: getTimerFontSize(),
                   lineHeight: '1',
+                  maxWidth: '90%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
                 }}
               >
                 {formatTime(timeLeft)}

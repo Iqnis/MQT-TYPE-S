@@ -117,13 +117,23 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     localStorage.setItem("backgroundTheme", backgroundTheme);
     localStorage.setItem("SOUND_SET", soundSet.toString());
 
-    // Navigate back to display
-    window.location.href = "/";
+    // Navigate to display
+    onNavigateToDisplay();
+  };
+
+  // Preview current settings without saving
+  const handlePreviewSettings = () => {
+    const currentSettings = {
+      defaultTimer,
+      backgroundTheme,
+      soundSet
+    };
+    onNavigateToDisplay(currentSettings);
   };
 
   // Navigate back without saving
   const handleBackToDisplay = () => {
-    window.location.href = "/";
+    onNavigateToDisplay();
   };
 
   // ========================================

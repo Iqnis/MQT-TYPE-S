@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft, Play, Volume2, Palette, Settings2, Monitor, RotateCcw, Download, Upload } from "lucide-react";
 
 // ========================================
 // CONFIGURATION CONSTANTS
@@ -19,6 +19,16 @@ const CONFIG = {
     { key: "red", name: "Red", color: "red" },
     { key: "blue", name: "Blue", color: "blue" },
   ],
+
+  // Timer presets
+  TIMER_PRESETS: [
+    { name: "1 Min", value: 60 },
+    { name: "2 Min", value: 120 },
+    { name: "5 Min", value: 300 },
+    { name: "10 Min", value: 600 },
+    { name: "15 Min", value: 900 },
+    { name: "30 Min", value: 1800 },
+  ],
 };
 
 // ========================================
@@ -34,7 +44,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     const defaultTimer = localStorage.getItem("defaultTimer") || "60";
     const backgroundTheme = localStorage.getItem("backgroundTheme") || "slate";
     const soundSet = localStorage.getItem("SOUND_SET") || "1";
-
+    
     return {
       defaultTimer: parseInt(defaultTimer),
       backgroundTheme: backgroundTheme,
@@ -45,10 +55,14 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
   const storedSettings = getStoredSettings();
 
   // State management
+  const [activeTab, setActiveTab] = useState("timer");
   const [defaultTimer, setDefaultTimer] = useState(storedSettings.defaultTimer);
   const [backgroundTheme, setBackgroundTheme] = useState(storedSettings.backgroundTheme);
   const [soundSet, setSoundSet] = useState(storedSettings.soundSet);
   const [fullscreen, setFullscreen] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [autoStart, setAutoStart] = useState(false);
+  const [showProgress, setShowProgress] = useState(true);
 
   // ========================================
   // UTILITY FUNCTIONS
@@ -60,31 +74,43 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       purple: {
         bg: "from-purple-900 via-purple-800 to-purple-900",
         text: "text-purple-100",
+        accent: "text-purple-300",
+        button: "bg-purple-600 hover:bg-purple-700",
         glow: "shadow-purple-500/50",
       },
       green: {
         bg: "from-green-900 via-green-800 to-green-900",
         text: "text-green-100",
+        accent: "text-green-300",
+        button: "bg-green-600 hover:bg-green-700",
         glow: "shadow-green-500/50",
       },
       white: {
         bg: "from-gray-100 via-gray-200 to-gray-100",
         text: "text-black",
+        accent: "text-gray-700",
+        button: "bg-gray-600 hover:bg-gray-700",
         glow: "shadow-gray-500/50",
       },
       slate: {
         bg: "from-slate-900 via-slate-800 to-slate-900",
         text: "text-emerald-100",
+        accent: "text-emerald-300",
+        button: "bg-emerald-600 hover:bg-emerald-700",
         glow: "shadow-emerald-500/50",
       },
       red: {
         bg: "from-red-900 via-red-800 to-red-900",
         text: "text-red-100",
+        accent: "text-red-300",
+        button: "bg-red-600 hover:bg-red-700",
         glow: "shadow-red-500/50",
       },
       blue: {
         bg: "from-blue-900 via-blue-800 to-blue-900",
         text: "text-blue-100",
+        accent: "text-blue-300",
+        button: "bg-blue-600 hover:bg-blue-700",
         glow: "shadow-blue-500/50",
       },
     };
@@ -116,7 +142,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     localStorage.setItem("defaultTimer", defaultTimer.toString());
     localStorage.setItem("backgroundTheme", backgroundTheme);
     localStorage.setItem("SOUND_SET", soundSet.toString());
-
+    
     // Navigate to display
     onNavigateToDisplay();
   };
@@ -131,9 +157,61 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     onNavigateToDisplay(currentSettings);
   };
 
-  // Navigate back without saving
-  const handleBackToDisplay = () => {
-    onNavigateToDisplay();
+  // Export settings
+  const handleExportSettings = () => {
+    const settings = {
+      defaultTimer,
+      backgroundTheme,
+      soundSet,
+      soundEnabled,
+      autoStart,
+      showProgress
+    };
+    const dataStr = JSON.stringify(settings, null, 2);
+    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'timer-settings.json';
+    link.click();
+  };
+
+  // Import settings
+  const handleImportSettings = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const settings = JSON.parse(e.target?.result as string);
+            setDefaultTimer(settings.defaultTimer || 60);
+            setBackgroundTheme(settings.backgroundTheme || "slate");
+            setSoundSet(settings.soundSet || 1);
+            setSoundEnabled(settings.soundEnabled !== false);
+            setAutoStart(settings.autoStart || false);
+            setShowProgress(settings.showProgress !== false);
+          } catch (error) {
+            alert('Invalid settings file');
+          }
+        };
+        reader.readAsText(file);
+      }
+    };
+    input.click();
+  };
+
+  // Reset to defaults
+  const handleResetDefaults = () => {
+    setDefaultTimer(60);
+    setBackgroundTheme("slate");
+    setSoundSet(1);
+    setSoundEnabled(true);
+    setAutoStart(false);
+    setShowProgress(true);
   };
 
   // ========================================
@@ -155,6 +233,273 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
   const colors = getColors(backgroundTheme);
 
   // ========================================
+  // TAB CONTENT COMPONENTS
+  // ========================================
+
+  const TimerSettings = () => (
+    <div className="space-y-8">
+      {/* Timer Duration */}
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Duration</h3>
+          <div className={`text-3xl font-mono ${colors.accent} bg-white/10 px-4 py-2 rounded-lg`}>
+            {formatTime(defaultTimer)}
+          </div>
+        </div>
+
+        {/* Preset Buttons */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          {CONFIG.TIMER_PRESETS.map((preset) => (
+            <button
+              key={preset.value}
+              onClick={() => setDefaultTimer(preset.value)}
+              className={`p-3 rounded-lg border transition-all ${
+                defaultTimer === preset.value
+                  ? "border-white/40 bg-white/20"
+                  : "border-white/20 bg-white/5 hover:bg-white/10"
+              }`}
+            >
+              <span className={`text-sm ${colors.text} font-medium`}>
+                {preset.name}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Manual Controls */}
+        <div className="flex items-center justify-between mb-4">
+          <label className={`text-sm font-medium ${colors.text}`}>
+            Custom Duration
+          </label>
+          <div className="flex gap-2">
+            <button
+              onClick={() =>
+                setDefaultTimer((prev) => Math.max(CONFIG.TIMER_MIN, prev - 60))
+              }
+              className={`px-4 py-2 text-lg rounded-lg bg-white/10 hover:bg-white/20 transition ${colors.text}`}
+            >
+              -1m
+            </button>
+            <button
+              onClick={() =>
+                setDefaultTimer((prev) => Math.max(CONFIG.TIMER_MIN, prev - 5))
+              }
+              className={`px-4 py-2 text-lg rounded-lg bg-white/10 hover:bg-white/20 transition ${colors.text}`}
+            >
+              -5s
+            </button>
+            <button
+              onClick={() =>
+                setDefaultTimer((prev) => Math.min(CONFIG.TIMER_MAX, prev + 5))
+              }
+              className={`px-4 py-2 text-lg rounded-lg bg-white/10 hover:bg-white/20 transition ${colors.text}`}
+            >
+              +5s
+            </button>
+            <button
+              onClick={() =>
+                setDefaultTimer((prev) => Math.min(CONFIG.TIMER_MAX, prev + 60))
+              }
+              className={`px-4 py-2 text-lg rounded-lg bg-white/10 hover:bg-white/20 transition ${colors.text}`}
+            >
+              +1m
+            </button>
+          </div>
+        </div>
+
+        {/* Range slider */}
+        <input
+          type="range"
+          min={CONFIG.TIMER_MIN}
+          max={CONFIG.TIMER_MAX}
+          step={CONFIG.TIMER_STEP}
+          value={defaultTimer}
+          onChange={(e) => setDefaultTimer(Number(e.target.value))}
+          className="w-full h-3 bg-white/20 rounded-lg appearance-none cursor-pointer mb-2"
+        />
+
+        <div className={`flex justify-between text-xs ${colors.text} opacity-60`}>
+          <span>{CONFIG.TIMER_MIN}s</span>
+          <span>{Math.floor(CONFIG.TIMER_MAX / 60)}m</span>
+        </div>
+      </div>
+
+      {/* Timer Behavior */}
+      <div>
+        <h3 className={`text-xl font-semibold ${colors.text} mb-6`}>Timer Behavior</h3>
+        
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className={`${colors.text}`}>Auto-start timer</span>
+            <button
+              onClick={() => setAutoStart(!autoStart)}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                autoStart ? colors.button : "bg-white/20"
+              }`}
+            >
+              <div
+                className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
+                  autoStart ? "translate-x-6" : "translate-x-0.5"
+                }`}
+              />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span className={`${colors.text}`}>Show progress bar</span>
+            <button
+              onClick={() => setShowProgress(!showProgress)}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                showProgress ? colors.button : "bg-white/20"
+              }`}
+            >
+              <div
+                className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
+                  showProgress ? "translate-x-6" : "translate-x-0.5"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const FunctionSettings = () => (
+    <div className="space-y-8">
+      {/* Sound Settings */}
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <Volume2 className={`w-6 h-6 ${colors.accent}`} />
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Sound Settings</h3>
+        </div>
+
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <span className={`${colors.text}`}>Enable sounds</span>
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                soundEnabled ? colors.button : "bg-white/20"
+              }`}
+            >
+              <div
+                className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
+                  soundEnabled ? "translate-x-6" : "translate-x-0.5"
+                }`}
+              />
+            </button>
+          </div>
+
+          <div>
+            <span className={`block mb-3 font-medium ${colors.text}`}>Sound Pack:</span>
+            <div className="grid grid-cols-3 gap-3">
+              {[1, 2, 3].map((setNum) => (
+                <button
+                  key={setNum}
+                  onClick={() => setSoundSet(setNum)}
+                  className={`p-4 rounded-lg transition-all ${
+                    soundSet === setNum
+                      ? "bg-white/20 font-bold border border-white/40"
+                      : "bg-white/10 hover:bg-white/20 border border-white/20"
+                  }`}
+                >
+                  <div className={`text-center ${colors.text}`}>
+                    <div className="text-lg mb-1">🔊</div>
+                    <div className="text-sm">Set {setNum}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Visual Settings */}
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <Palette className={`w-6 h-6 ${colors.accent}`} />
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Visual Theme</h3>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          {CONFIG.THEMES.map((theme) => (
+            <button
+              key={theme.key}
+              onClick={() => setBackgroundTheme(theme.key)}
+              className={`p-4 rounded-lg border transition-all ${
+                backgroundTheme === theme.key
+                  ? "border-white/40 bg-white/20"
+                  : "border-white/20 bg-white/5 hover:bg-white/10"
+              }`}
+            >
+              <div className={`w-8 h-8 rounded-full mx-auto mb-3 bg-${theme.color}-400`}></div>
+              <span className={`text-sm ${colors.text} block font-medium`}>
+                {theme.name}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const ExtraFunctionSettings = () => (
+    <div className="space-y-8">
+      {/* Display Settings */}
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <Monitor className={`w-6 h-6 ${colors.accent}`} />
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Display Settings</h3>
+        </div>
+
+        <div className="space-y-4">
+          <button
+            onClick={handleFullscreenToggle}
+            className={`w-full py-4 rounded-lg bg-white/20 border border-white/30 hover:bg-white/30 transition-all ${colors.text} font-medium text-lg`}
+          >
+            {fullscreen ? "🗗 Exit Fullscreen" : "⛶ Enter Fullscreen"}
+          </button>
+        </div>
+      </div>
+
+      {/* Data Management */}
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <Settings2 className={`w-6 h-6 ${colors.accent}`} />
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Data Management</h3>
+        </div>
+
+        <div className="space-y-4">
+          <button
+            onClick={handleExportSettings}
+            className={`w-full py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all ${colors.text} font-medium flex items-center justify-center gap-2`}
+          >
+            <Download className="w-4 h-4" />
+            Export Settings
+          </button>
+
+          <button
+            onClick={handleImportSettings}
+            className={`w-full py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all ${colors.text} font-medium flex items-center justify-center gap-2`}
+          >
+            <Upload className="w-4 h-4" />
+            Import Settings
+          </button>
+
+          <button
+            onClick={handleResetDefaults}
+            className={`w-full py-3 rounded-lg bg-red-600 hover:bg-red-700 border border-red-500 transition-all text-white font-medium flex items-center justify-center gap-2`}
+          >
+            <RotateCcw className="w-4 h-4" />
+            Reset to Defaults
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ========================================
   // RENDER
   // ========================================
 
@@ -169,137 +514,58 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-white/5 rounded-full blur-xl"></div>
       </div>
 
-      {/* Settings container */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 w-full max-w-md mx-4">
-          {/* Header */}
-          <div className="flex items-center justify-center mb-8">
-            <h1 className={`text-3xl font-bold ${colors.text}`}>Timer Settings</h1>
-          </div>
+      {/* Main container */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Header */}
+        <div className="p-6 border-b border-white/10">
+          <h1 className={`text-4xl font-bold ${colors.text} text-center`}>Timer Settings</h1>
+        </div>
 
-          {/* Timer Duration Setting */}
-          <div className="mb-8">
-            {/* Label and buttons */}
-            <div className="flex items-center justify-between mb-4">
-              <label className={`text-sm font-medium ${colors.text}`}>
-                Countdown Timer (min): {formatTime(defaultTimer)}
-              </label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() =>
-                    setDefaultTimer((prev) => Math.max(CONFIG.TIMER_MIN, prev - 60))
-                  }
-                  className={`px-3 py-1 text-lg rounded-full bg-white/10 hover:bg-white/20 transition ${colors.text}`}
-                >
-                  &lt;
-                </button>
-                <button
-                  onClick={() =>
-                    setDefaultTimer((prev) => Math.min(CONFIG.TIMER_MAX, prev + 60))
-                  }
-                  className={`px-3 py-1 text-lg rounded-full bg-white/10 hover:bg-white/20 transition ${colors.text}`}
-                >
-                  &gt;
-                </button>
-              </div>
-            </div>
-
-            {/* Range slider */}
-            <input
-              type="range"
-              min={CONFIG.TIMER_MIN}
-              max={CONFIG.TIMER_MAX}
-              step={CONFIG.TIMER_STEP}
-              value={defaultTimer}
-              onChange={(e) => setDefaultTimer(Number(e.target.value))}
-              className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
-            />
-
-            {/* Min/Max Labels */}
-            <div className={`flex justify-between text-xs ${colors.text} opacity-60 mt-2`}>
-              <span>{CONFIG.TIMER_MIN}s</span>
-              <span>{Math.floor(CONFIG.TIMER_MAX / 60)}m</span>
-            </div>
-          </div>
-
-          {/* Sound Settings */}
-          <div className="mb-8">
-            <div className={`flex flex-col gap-2 text-sm ${colors.text}`}>
-              <span className="mb-2 font-medium">Sound Set:</span>
-              {[1, 2, 3].map((setNum) => (
-                <button
-                  key={setNum}
-                  onClick={() => setSoundSet(setNum)}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    soundSet === setNum
-                      ? "bg-white/20 font-bold"
-                      : "bg-white/10 hover:bg-white/20"
-                  }`}
-                >
-                  Set {setNum}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Background Theme */}
-          <div className="mb-8">
-            <label className={`block text-sm font-medium ${colors.text} mb-4`}>
-              Background Theme
-            </label>
-            <div className="grid grid-cols-3 gap-3">
-              {CONFIG.THEMES.map((theme) => (
-                <button
-                  key={theme.key}
-                  onClick={() => setBackgroundTheme(theme.key)}
-                  className={`p-4 rounded-lg border transition-all ${
-                    backgroundTheme === theme.key
-                      ? "border-white/40 bg-white/20"
-                      : "border-white/20 bg-white/5 hover:bg-white/10"
-                  }`}
-                >
-                  <div className={`w-6 h-6 rounded-full mx-auto mb-2 bg-${theme.color}-400`}></div>
-                  <span className={`text-xs ${colors.text} block`}>
-                    {theme.name}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Fullscreen Toggle */}
-          <div className="mb-8">
-            <label className={`block text-sm font-medium ${colors.text} mb-3`}>
-              Fullscreen Mode
-            </label>
+        {/* Tab Navigation */}
+        <div className="flex border-b border-white/10">
+          {[
+            { id: "timer", label: "Timer", icon: "⏱️" },
+            { id: "function", label: "Function", icon: "🔧" },
+            { id: "extra", label: "Extra Function", icon: "⚡" },
+          ].map((tab) => (
             <button
-              onClick={handleFullscreenToggle}
-              className={`w-full py-3 rounded-lg bg-white/20 border border-white/30 hover:bg-white/30 transition-all ${colors.text} font-medium`}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex-1 py-4 px-6 text-center font-medium transition-all ${
+                activeTab === tab.id
+                  ? `${colors.text} bg-white/10 border-b-2 border-current`
+                  : `${colors.text} opacity-60 hover:opacity-80 hover:bg-white/5`
+              }`}
             >
-              {fullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+              <div className="text-2xl mb-1">{tab.icon}</div>
+              <div className="text-sm">{tab.label}</div>
             </button>
-          </div>
+          ))}
+        </div>
 
-          {/* Preview button */}
-          <div className="mb-6">
+        {/* Tab Content */}
+        <div className="flex-1 p-8 overflow-y-auto">
+          <div className="max-w-4xl mx-auto">
+            {activeTab === "timer" && <TimerSettings />}
+            {activeTab === "function" && <FunctionSettings />}
+            {activeTab === "extra" && <ExtraFunctionSettings />}
+          </div>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="p-6 border-t border-white/10">
+          <div className="max-w-4xl mx-auto flex gap-4">
             <button
               onClick={handlePreviewSettings}
-              className={`w-full py-4 rounded-lg bg-blue-600 hover:bg-blue-700 transition-all text-white font-bold text-lg`}
+              className={`flex-1 py-4 rounded-lg bg-blue-600 hover:bg-blue-700 transition-all text-white font-bold text-lg`}
             >
               🔍 Preview Timer
             </button>
-            <p className={`text-xs ${colors.text} opacity-60 text-center mt-2`}>
-              See how your timer looks with current settings
-            </p>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex gap-4">
             <button
               onClick={handleSaveSettings}
-              className={`flex-1 py-3 rounded-lg bg-white/20 border border-white/30 hover:bg-white/30 transition-all ${colors.text} font-medium`}
+              className={`flex-1 py-4 rounded-lg ${colors.button} transition-all text-white font-bold text-lg`}
             >
-              Save & Start Timer
+              💾 Save & Start Timer
             </button>
           </div>
         </div>

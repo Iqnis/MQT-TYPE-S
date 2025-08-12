@@ -437,54 +437,106 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
 
   const ExtraFunctionSettings = () => (
     <div className="space-y-8">
+      {/* Sound Settings */}
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <Volume2 className={`w-6 h-6 ${colors.accent}`} />
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Sound Settings</h3>
+          <p className={`text-sm ${colors.text} opacity-70`}>Configure audio alerts and notifications</p>
+        </div>
+
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className={`${colors.text} font-medium`}>Enable sounds</span>
+              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>Play audio alerts during countdown</p>
+            </div>
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                soundEnabled ? colors.button : (backgroundTheme === 'white' ? 'bg-gray-300' : 'bg-white/20')
+              }`}
+            >
+              <div
+                className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
+                  soundEnabled ? "translate-x-6" : "translate-x-0.5"
+                }`}
+              />
+            </button>
+          </div>
+
+          <div>
+            <span className={`block mb-3 font-medium ${colors.text}`}>Sound Pack</span>
+            <div className="grid grid-cols-3 gap-3">
+              {[1, 2, 3].map((setNum) => (
+                <button
+                  key={setNum}
+                  onClick={() => setSoundSet(setNum)}
+                  className={`p-4 rounded-lg border transition-all ${
+                    soundSet === setNum
+                      ? `${colors.cardButton} border-current`
+                      : `${colors.cardButton}`
+                  }`}
+                >
+                  <div className={`text-center ${colors.text}`}>
+                    <div className="text-lg mb-1">🔊</div>
+                    <div className="text-sm">Set {setNum}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Choose from different sound packs for warnings and completion alerts</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Visual Theme */}
+      <div>
+        <div className="flex items-center gap-3 mb-6">
+          <Palette className={`w-6 h-6 ${colors.accent}`} />
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Visual Theme</h3>
+          <p className={`text-sm ${colors.text} opacity-70`}>Customize the appearance and colors</p>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          {CONFIG.THEMES.map((theme) => (
+            <button
+              key={theme.key}
+              onClick={() => setBackgroundTheme(theme.key)}
+              className={`p-4 rounded-lg border transition-all ${
+                backgroundTheme === theme.key
+                  ? `${colors.cardButton} border-current`
+                  : `${colors.cardButton}`
+              }`}
+            >
+              <div className={`w-8 h-8 rounded-full mx-auto mb-3 bg-${theme.color}-400`}></div>
+              <span className={`text-sm ${colors.text} block font-medium`}>
+                {theme.name}
+              </span>
+            </button>
+          ))}
+        </div>
+        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Select a color theme that matches your preference and environment</p>
+      </div>
+
       {/* Display Settings */}
       <div>
         <div className="flex items-center gap-3 mb-6">
           <Monitor className={`w-6 h-6 ${colors.accent}`} />
           <h3 className={`text-xl font-semibold ${colors.text}`}>Display Settings</h3>
+          <p className={`text-sm ${colors.text} opacity-70`}>Control fullscreen mode and display behavior</p>
         </div>
 
         <div className="space-y-4">
           <button
             onClick={handleFullscreenToggle}
-            className={`w-full py-4 rounded-lg bg-white/20 border border-white/30 hover:bg-white/30 transition-all ${colors.text} font-medium text-lg`}
+            className={`w-full py-4 rounded-lg ${colors.cardButton} border transition-all ${colors.text} font-medium text-lg`}
           >
-            {fullscreen ? "🗗 Exit Fullscreen" : "⛶ Enter Fullscreen"}
+            {fullscreen ? "🗗 Exit Display Fullscreen" : "⛶ Enter Display Fullscreen"}
           </button>
-        </div>
-      </div>
-
-      {/* Data Management */}
-      <div>
-        <div className="flex items-center gap-3 mb-6">
-          <Settings2 className={`w-6 h-6 ${colors.accent}`} />
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Data Management</h3>
-        </div>
-
-        <div className="space-y-4">
-          <button
-            onClick={handleExportSettings}
-            className={`w-full py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all ${colors.text} font-medium flex items-center justify-center gap-2`}
-          >
-            <Download className="w-4 h-4" />
-            Export Settings
-          </button>
-
-          <button
-            onClick={handleImportSettings}
-            className={`w-full py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all ${colors.text} font-medium flex items-center justify-center gap-2`}
-          >
-            <Upload className="w-4 h-4" />
-            Import Settings
-          </button>
-
-          <button
-            onClick={handleResetDefaults}
-            className={`w-full py-3 rounded-lg bg-red-600 hover:bg-red-700 border border-red-500 transition-all text-white font-medium flex items-center justify-center gap-2`}
-          >
-            <RotateCcw className="w-4 h-4" />
-            Reset to Defaults
-          </button>
+          <p className={`text-xs ${colors.text} opacity-60 text-center`}>
+            Fullscreen mode hides the mouse cursor and shows only the timer display for distraction-free focus
+          </p>
         </div>
       </div>
     </div>
@@ -556,7 +608,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               onClick={handleSaveSettings}
               className={`flex-1 py-4 rounded-lg ${colors.button} transition-all text-white font-bold text-lg`}
             >
-              💾 Save & Start Timer
+              ��� Save & Start Timer
             </button>
           </div>
         </div>

@@ -268,6 +268,19 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     setDefaultTimer(settings.defaultTimer);
     setBackgroundTheme(settings.backgroundTheme);
     setSoundSet(settings.soundSet);
+
+    // Load additional settings from localStorage
+    const storedFormat = localStorage.getItem("timerFormat") || "MM:SS";
+    const storedFont = localStorage.getItem("timerFont") || "inter";
+    const storedSoundEnabled = localStorage.getItem("soundEnabled") !== "false";
+    const storedAutoStart = localStorage.getItem("autoStart") === "true";
+    const storedShowProgress = localStorage.getItem("showProgress") !== "false";
+
+    setTimerFormat(storedFormat);
+    setTimerFont(storedFont);
+    setSoundEnabled(storedSoundEnabled);
+    setAutoStart(storedAutoStart);
+    setShowProgress(storedShowProgress);
   }, []);
 
   // ========================================

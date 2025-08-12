@@ -10,16 +10,6 @@ const CONFIG = {
   TIMER_MAX: 59940, // Maximum timer (seconds)
   TIMER_STEP: 5, // Step increment (seconds)
 
-  // Available themes
-  THEMES: [
-    { key: "slate", name: "Default", color: "emerald" },
-    { key: "purple", name: "Purple", color: "purple" },
-    { key: "green", name: "Green", color: "green" },
-    { key: "white", name: "White", color: "gray" },
-    { key: "red", name: "Red", color: "red" },
-    { key: "blue", name: "Blue", color: "blue" },
-  ],
-
   // Timer presets
   TIMER_PRESETS: [
     { name: "1 Min", value: 60 },
@@ -28,6 +18,32 @@ const CONFIG = {
     { name: "10 Min", value: 600 },
     { name: "15 Min", value: 900 },
     { name: "30 Min", value: 1800 },
+  ],
+
+  // Timer format options
+  TIMER_FORMATS: [
+    { format: "MM", example: "05", description: "Minutes only" },
+    { format: "MM:SS", example: "05:30", description: "Minutes and seconds" },
+    { format: "HH:MM:SS", example: "01:05:30", description: "Hours, minutes, seconds" },
+    { format: "HhMmSs", example: "1h5m30s", description: "Short format with units" },
+  ],
+
+  // Font options (without slashed zeros)
+  TIMER_FONTS: [
+    { key: "inter", name: "Inter", class: "font-sans", description: "Clean, modern sans-serif" },
+    { key: "roboto", name: "Roboto", class: "font-mono", description: "Monospace, technical look" },
+    { key: "system", name: "System", class: "font-system", description: "System default font" },
+    { key: "arial", name: "Arial", class: "font-arial", description: "Classic, highly readable" },
+  ],
+
+  // Available themes
+  THEMES: [
+    { key: "slate", name: "Default", color: "emerald" },
+    { key: "purple", name: "Purple", color: "purple" },
+    { key: "green", name: "Green", color: "green" },
+    { key: "white", name: "White", color: "gray" },
+    { key: "red", name: "Red", color: "red" },
+    { key: "blue", name: "Blue", color: "blue" },
   ],
 };
 
@@ -577,7 +593,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
           {/* Tab Navigation */}
           <div className={`flex border-b ${backgroundTheme === 'white' ? 'border-gray-200' : 'border-white/10'}`}>
             {[
-              { id: "timer", label: "Timer", icon: "⏱���" },
+              { id: "timer", label: "Timer", icon: "⏱️" },
               { id: "function", label: "Function", icon: "🔧" },
               { id: "extra", label: "Extra Function", icon: "⚡" },
             ].map((tab) => (

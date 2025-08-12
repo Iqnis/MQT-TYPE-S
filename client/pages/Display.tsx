@@ -89,6 +89,36 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
     return fontMap[fontKey as keyof typeof fontMap] || "font-sans";
   };
 
+  // Dynamic font sizing based on format and content length
+  const getTimerFontSize = () => {
+    const timeText = formatTime(timeLeft);
+    const textLength = timeText.length;
+
+    // Adjust font size based on timer format and text length
+    switch (timerFormat) {
+      case "MM":
+        // Short format like "5" or "15"
+        return textLength <= 2 ? '32vw' : '28vw';
+
+      case "MM:SS":
+        // Standard format like "05:30"
+        return '20vw';
+
+      case "HH:MM:SS":
+        // Long format like "01:05:30"
+        return textLength <= 7 ? '14vw' : '12vw';
+
+      case "HhMmSs":
+        // Unit format like "1h5m30s" or "5m30s" or "30s"
+        if (textLength <= 3) return '24vw';      // "30s"
+        if (textLength <= 6) return '18vw';      // "5m30s"
+        return '14vw';                           // "1h5m30s"
+
+      default:
+        return '20vw';
+    }
+  };
+
   // ========================================
   // UTILITY FUNCTIONS
   // ========================================

@@ -676,7 +676,6 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
           </div>
         </div>
       )}
-      </div>
     </div>
   );
 }

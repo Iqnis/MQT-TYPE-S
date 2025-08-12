@@ -664,7 +664,31 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className={`text-2xl font-mono ${colors.text} text-center`}>
-                    {formatTime(defaultTimer)}
+                    {(() => {
+                      const totalSecs = Math.floor(defaultTimer);
+                      const hours = Math.floor(totalSecs / 3600);
+                      const mins = Math.floor((totalSecs % 3600) / 60);
+                      const secs = totalSecs % 60;
+
+                      switch (timerFormat) {
+                        case "MM":
+                          return `${Math.ceil(defaultTimer / 60)}`;
+                        case "MM:SS":
+                          return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+                        case "HH:MM:SS":
+                          return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+                        case "HhMmSs":
+                          if (hours > 0) {
+                            return `${hours}h${mins}m${secs}s`;
+                          } else if (mins > 0) {
+                            return `${mins}m${secs}s`;
+                          } else {
+                            return `${secs}s`;
+                          }
+                        default:
+                          return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+                      }
+                    })()}
                   </div>
                 </div>
               </div>

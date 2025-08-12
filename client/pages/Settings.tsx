@@ -155,14 +155,9 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     onNavigateToDisplay();
   };
 
-  // Preview current settings without saving
+  // Preview current settings in popup
   const handlePreviewSettings = () => {
-    const currentSettings = {
-      defaultTimer,
-      backgroundTheme,
-      soundSet
-    };
-    onNavigateToDisplay(currentSettings);
+    setShowPreview(true);
   };
 
   // Export settings
@@ -608,7 +603,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               onClick={handleSaveSettings}
               className={`flex-1 py-4 rounded-lg ${colors.button} transition-all text-white font-bold text-lg`}
             >
-              ��� Save & Start Timer
+              💾 Save & Start Timer
             </button>
           </div>
         </div>

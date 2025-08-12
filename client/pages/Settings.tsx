@@ -44,7 +44,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     const defaultTimer = localStorage.getItem("defaultTimer") || "60";
     const backgroundTheme = localStorage.getItem("backgroundTheme") || "slate";
     const soundSet = localStorage.getItem("SOUND_SET") || "1";
-    
+
     return {
       defaultTimer: parseInt(defaultTimer),
       backgroundTheme: backgroundTheme,
@@ -76,6 +76,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         text: "text-purple-100",
         accent: "text-purple-300",
         button: "bg-purple-600 hover:bg-purple-700",
+        cardButton: "bg-white/10 hover:bg-white/20 border-white/20",
         glow: "shadow-purple-500/50",
       },
       green: {
@@ -83,6 +84,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         text: "text-green-100",
         accent: "text-green-300",
         button: "bg-green-600 hover:bg-green-700",
+        cardButton: "bg-white/10 hover:bg-white/20 border-white/20",
         glow: "shadow-green-500/50",
       },
       white: {
@@ -90,6 +92,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         text: "text-black",
         accent: "text-gray-700",
         button: "bg-gray-600 hover:bg-gray-700",
+        cardButton: "bg-gray-200 hover:bg-gray-300 border-gray-300",
         glow: "shadow-gray-500/50",
       },
       slate: {
@@ -97,6 +100,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         text: "text-emerald-100",
         accent: "text-emerald-300",
         button: "bg-emerald-600 hover:bg-emerald-700",
+        cardButton: "bg-white/10 hover:bg-white/20 border-white/20",
         glow: "shadow-emerald-500/50",
       },
       red: {
@@ -104,6 +108,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         text: "text-red-100",
         accent: "text-red-300",
         button: "bg-red-600 hover:bg-red-700",
+        cardButton: "bg-white/10 hover:bg-white/20 border-white/20",
         glow: "shadow-red-500/50",
       },
       blue: {
@@ -111,6 +116,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         text: "text-blue-100",
         accent: "text-blue-300",
         button: "bg-blue-600 hover:bg-blue-700",
+        cardButton: "bg-white/10 hover:bg-white/20 border-white/20",
         glow: "shadow-blue-500/50",
       },
     };
@@ -142,7 +148,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     localStorage.setItem("defaultTimer", defaultTimer.toString());
     localStorage.setItem("backgroundTheme", backgroundTheme);
     localStorage.setItem("SOUND_SET", soundSet.toString());
-    
+
     // Navigate to display
     onNavigateToDisplay();
   };
@@ -327,7 +333,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       {/* Timer Behavior */}
       <div>
         <h3 className={`text-xl font-semibold ${colors.text} mb-6`}>Timer Behavior</h3>
-        
+
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <span className={`${colors.text}`}>Auto-start timer</span>

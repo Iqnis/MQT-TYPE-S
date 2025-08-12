@@ -81,6 +81,8 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
 
   // Sound effects
   const playSound = (soundType: string) => {
+    if (!soundEnabled) return; // Respect sound setting
+
     try {
       const baseName = CONFIG.SOUNDS[soundType as keyof typeof CONFIG.SOUNDS];
 

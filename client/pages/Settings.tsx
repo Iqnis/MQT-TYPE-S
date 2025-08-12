@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, Play, Volume2, Palette, Settings2, Monitor, RotateCcw, Download, Upload } from "lucide-react";
+import {
+  ArrowLeft,
+  Play,
+  Volume2,
+  Palette,
+  Settings2,
+  Monitor,
+  RotateCcw,
+  Download,
+  Upload,
+} from "lucide-react";
 
 // ========================================
 // CONFIGURATION CONSTANTS
@@ -24,16 +34,44 @@ const CONFIG = {
   TIMER_FORMATS: [
     { format: "MM", example: "05", description: "Minutes only" },
     { format: "MM:SS", example: "05:30", description: "Minutes and seconds" },
-    { format: "HH:MM:SS", example: "01:05:30", description: "Hours, minutes, seconds" },
-    { format: "HhMmSs", example: "1h5m30s", description: "Short format with units" },
+    {
+      format: "HH:MM:SS",
+      example: "01:05:30",
+      description: "Hours, minutes, seconds",
+    },
+    {
+      format: "HhMmSs",
+      example: "1h5m30s",
+      description: "Short format with units",
+    },
   ],
 
   // Font options (without slashed zeros)
   TIMER_FONTS: [
-    { key: "inter", name: "Inter", class: "font-sans", description: "Clean, modern sans-serif" },
-    { key: "roboto", name: "Roboto", class: "font-mono", description: "Monospace, technical look" },
-    { key: "system", name: "System", class: "font-system", description: "System default font" },
-    { key: "arial", name: "Arial", class: "font-arial", description: "Classic, highly readable" },
+    {
+      key: "inter",
+      name: "Inter",
+      class: "font-sans",
+      description: "Clean, modern sans-serif",
+    },
+    {
+      key: "roboto",
+      name: "Roboto",
+      class: "font-mono",
+      description: "Monospace, technical look",
+    },
+    {
+      key: "system",
+      name: "System",
+      class: "font-system",
+      description: "System default font",
+    },
+    {
+      key: "arial",
+      name: "Arial",
+      class: "font-arial",
+      description: "Classic, highly readable",
+    },
   ],
 
   // Available themes
@@ -55,7 +93,6 @@ interface SettingsProps {
 }
 
 export default function Settings({ onNavigateToDisplay }: SettingsProps) {
-
   // ========================================
   // INITIAL SETTINGS LOADER
   // ========================================
@@ -67,7 +104,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     return {
       defaultTimer: parseInt(defaultTimer),
       backgroundTheme: backgroundTheme,
-      soundSet: parseInt(soundSet)
+      soundSet: parseInt(soundSet),
     };
   };
 
@@ -90,7 +127,9 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
   const [showProgress, setShowProgress] = useState(true);
 
   // Extra Function Settings
-  const [backgroundTheme, setBackgroundTheme] = useState(storedSettings.backgroundTheme);
+  const [backgroundTheme, setBackgroundTheme] = useState(
+    storedSettings.backgroundTheme,
+  );
   const [soundSet, setSoundSet] = useState(storedSettings.soundSet);
   const [soundEnabled, setSoundEnabled] = useState(true);
 
@@ -166,10 +205,10 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     setFullscreen(!fullscreen);
     if (fullscreen) {
       document.exitFullscreen();
-      document.body.style.cursor = 'auto';
+      document.body.style.cursor = "auto";
     } else {
       document.documentElement.requestFullscreen();
-      document.body.style.cursor = 'none';
+      document.body.style.cursor = "none";
     }
   };
 
@@ -194,7 +233,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       autoStart,
       showProgress,
       timerFormat,
-      timerFont
+      timerFont,
     };
     onNavigateToDisplay(savedSettings);
   };
@@ -212,22 +251,22 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       soundSet,
       soundEnabled,
       autoStart,
-      showProgress
+      showProgress,
     };
     const dataStr = JSON.stringify(settings, null, 2);
-    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = 'timer-settings.json';
+    link.download = "timer-settings.json";
     link.click();
   };
 
   // Import settings
   const handleImportSettings = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
@@ -242,7 +281,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
             setAutoStart(settings.autoStart || false);
             setShowProgress(settings.showProgress !== false);
           } catch (error) {
-            alert('Invalid settings file');
+            alert("Invalid settings file");
           }
         };
         reader.readAsText(file);
@@ -302,17 +341,25 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       <div>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Duration</h3>
-            <p className={`text-sm ${colors.text} opacity-70 mt-1`}>Set how long the countdown timer will run</p>
+            <h3 className={`text-xl font-semibold ${colors.text}`}>
+              Timer Duration
+            </h3>
+            <p className={`text-sm ${colors.text} opacity-70 mt-1`}>
+              Set how long the countdown timer will run
+            </p>
           </div>
-          <div className={`text-3xl font-mono ${colors.accent} ${colors.cardButton} px-4 py-2 rounded-lg border`}>
+          <div
+            className={`text-3xl font-mono ${colors.accent} ${colors.cardButton} px-4 py-2 rounded-lg border`}
+          >
             {formatTime(defaultTimer)}
           </div>
         </div>
 
         {/* Preset Buttons */}
         <div className="mb-6">
-          <label className={`block text-sm font-medium ${colors.text} mb-3`}>Quick Presets</label>
+          <label className={`block text-sm font-medium ${colors.text} mb-3`}>
+            Quick Presets
+          </label>
           <div className="grid grid-cols-3 gap-3">
             {CONFIG.TIMER_PRESETS.map((preset) => (
               <button
@@ -330,12 +377,16 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               </button>
             ))}
           </div>
-          <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Click any preset to instantly set that duration</p>
+          <p className={`text-xs ${colors.text} opacity-60 mt-2`}>
+            Click any preset to instantly set that duration
+          </p>
         </div>
 
         {/* Custom Duration - Draggable */}
         <div className="mb-6">
-          <label className={`block text-sm font-medium ${colors.text} mb-3`}>Custom Duration (Drag to adjust)</label>
+          <label className={`block text-sm font-medium ${colors.text} mb-3`}>
+            Custom Duration (Drag to adjust)
+          </label>
           <input
             type="range"
             min={CONFIG.TIMER_MIN}
@@ -344,24 +395,32 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
             value={defaultTimer}
             onChange={(e) => setDefaultTimer(Number(e.target.value))}
             className={`w-full h-4 rounded-lg appearance-none cursor-grab active:cursor-grabbing ${
-              backgroundTheme === 'white' ? 'bg-gray-300' : 'bg-white/20'
+              backgroundTheme === "white" ? "bg-gray-300" : "bg-white/20"
             }`}
             style={{
-              background: backgroundTheme === 'white'
-                ? `linear-gradient(to right, #6b7280 0%, #6b7280 ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, #d1d5db ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, #d1d5db 100%)`
-                : `linear-gradient(to right, currentColor 0%, currentColor ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, rgba(255,255,255,0.2) ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, rgba(255,255,255,0.2) 100%)`
+              background:
+                backgroundTheme === "white"
+                  ? `linear-gradient(to right, #6b7280 0%, #6b7280 ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, #d1d5db ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, #d1d5db 100%)`
+                  : `linear-gradient(to right, currentColor 0%, currentColor ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, rgba(255,255,255,0.2) ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, rgba(255,255,255,0.2) 100%)`,
             }}
           />
-          <div className={`flex justify-between text-xs ${colors.text} opacity-60 mt-2`}>
+          <div
+            className={`flex justify-between text-xs ${colors.text} opacity-60 mt-2`}
+          >
             <span>{CONFIG.TIMER_MIN}s</span>
             <span>{Math.floor(CONFIG.TIMER_MAX / 60)}m</span>
           </div>
-          <p className={`text-xs ${colors.text} opacity-60 mt-1`}>Drag the slider to set any custom duration between 1 minute and 16+ hours</p>
+          <p className={`text-xs ${colors.text} opacity-60 mt-1`}>
+            Drag the slider to set any custom duration between 1 minute and 16+
+            hours
+          </p>
         </div>
 
         {/* Manual Controls */}
         <div>
-          <label className={`block text-sm font-medium ${colors.text} mb-3`}>Fine Adjustment</label>
+          <label className={`block text-sm font-medium ${colors.text} mb-3`}>
+            Fine Adjustment
+          </label>
           <div className="flex gap-2 justify-center">
             <button
               onClick={() =>
@@ -396,7 +455,9 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               +1m
             </button>
           </div>
-          <p className={`text-xs ${colors.text} opacity-60 mt-2 text-center`}>Use these buttons to make precise adjustments to your timer duration</p>
+          <p className={`text-xs ${colors.text} opacity-60 mt-2 text-center`}>
+            Use these buttons to make precise adjustments to your timer duration
+          </p>
         </div>
       </div>
     </div>
@@ -407,8 +468,12 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       {/* Timer Format */}
       <div>
         <div className="mb-6">
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Format</h3>
-          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>Choose how the countdown time is displayed</p>
+          <h3 className={`text-xl font-semibold ${colors.text}`}>
+            Timer Format
+          </h3>
+          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>
+            Choose how the countdown time is displayed
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -423,7 +488,9 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               }`}
             >
               <div className={`text-center ${colors.text}`}>
-                <div className={`text-lg mb-1 ${CONFIG.TIMER_FONTS.find(f => f.key === timerFont)?.class || 'font-sans'}`}>
+                <div
+                  className={`text-lg mb-1 ${CONFIG.TIMER_FONTS.find((f) => f.key === timerFont)?.class || "font-sans"}`}
+                >
                   {option.example}
                 </div>
                 <div className="text-xs opacity-70">{option.description}</div>
@@ -431,14 +498,18 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
             </button>
           ))}
         </div>
-        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Select the format that's easiest for you to read during countdown</p>
+        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>
+          Select the format that's easiest for you to read during countdown
+        </p>
       </div>
 
       {/* Timer Font */}
       <div>
         <div className="mb-6">
           <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Font</h3>
-          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>Choose the font style for timer display (zero without slash)</p>
+          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>
+            Choose the font style for timer display (zero without slash)
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -460,26 +531,40 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
             </button>
           ))}
         </div>
-        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>All fonts use zeros without slashes for better readability</p>
+        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>
+          All fonts use zeros without slashes for better readability
+        </p>
       </div>
 
       {/* Timer Behavior */}
       <div>
         <div className="mb-6">
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Behavior</h3>
-          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>Control how the timer behaves when started</p>
+          <h3 className={`text-xl font-semibold ${colors.text}`}>
+            Timer Behavior
+          </h3>
+          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>
+            Control how the timer behaves when started
+          </p>
         </div>
 
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <span className={`${colors.text} font-medium`}>Auto-start timer</span>
-              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>Timer starts immediately when display opens</p>
+              <span className={`${colors.text} font-medium`}>
+                Auto-start timer
+              </span>
+              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>
+                Timer starts immediately when display opens
+              </p>
             </div>
             <button
               onClick={() => setAutoStart(!autoStart)}
               className={`relative w-12 h-6 rounded-full transition-colors ${
-                autoStart ? colors.button : (backgroundTheme === 'white' ? 'bg-gray-300' : 'bg-white/20')
+                autoStart
+                  ? colors.button
+                  : backgroundTheme === "white"
+                    ? "bg-gray-300"
+                    : "bg-white/20"
               }`}
             >
               <div
@@ -492,13 +577,21 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
 
           <div className="flex items-center justify-between">
             <div>
-              <span className={`${colors.text} font-medium`}>Show progress bar</span>
-              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>Display circular progress ring around timer</p>
+              <span className={`${colors.text} font-medium`}>
+                Show progress bar
+              </span>
+              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>
+                Display circular progress ring around timer
+              </p>
             </div>
             <button
               onClick={() => setShowProgress(!showProgress)}
               className={`relative w-12 h-6 rounded-full transition-colors ${
-                showProgress ? colors.button : (backgroundTheme === 'white' ? 'bg-gray-300' : 'bg-white/20')
+                showProgress
+                  ? colors.button
+                  : backgroundTheme === "white"
+                    ? "bg-gray-300"
+                    : "bg-white/20"
               }`}
             >
               <div
@@ -519,20 +612,32 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       <div>
         <div className="flex items-center gap-3 mb-6">
           <Volume2 className={`w-6 h-6 ${colors.accent}`} />
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Sound Settings</h3>
-          <p className={`text-sm ${colors.text} opacity-70`}>Configure audio alerts and notifications</p>
+          <h3 className={`text-xl font-semibold ${colors.text}`}>
+            Sound Settings
+          </h3>
+          <p className={`text-sm ${colors.text} opacity-70`}>
+            Configure audio alerts and notifications
+          </p>
         </div>
 
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <span className={`${colors.text} font-medium`}>Enable sounds</span>
-              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>Play audio alerts during countdown</p>
+              <span className={`${colors.text} font-medium`}>
+                Enable sounds
+              </span>
+              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>
+                Play audio alerts during countdown
+              </p>
             </div>
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
               className={`relative w-12 h-6 rounded-full transition-colors ${
-                soundEnabled ? colors.button : (backgroundTheme === 'white' ? 'bg-gray-300' : 'bg-white/20')
+                soundEnabled
+                  ? colors.button
+                  : backgroundTheme === "white"
+                    ? "bg-gray-300"
+                    : "bg-white/20"
               }`}
             >
               <div
@@ -544,7 +649,9 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
           </div>
 
           <div>
-            <span className={`block mb-3 font-medium ${colors.text}`}>Sound Pack</span>
+            <span className={`block mb-3 font-medium ${colors.text}`}>
+              Sound Pack
+            </span>
             <div className="grid grid-cols-3 gap-3">
               {[1, 2, 3].map((setNum) => (
                 <button
@@ -563,7 +670,10 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
                 </button>
               ))}
             </div>
-            <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Choose from different sound packs for warnings and completion alerts</p>
+            <p className={`text-xs ${colors.text} opacity-60 mt-2`}>
+              Choose from different sound packs for warnings and completion
+              alerts
+            </p>
           </div>
         </div>
       </div>
@@ -572,8 +682,12 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       <div>
         <div className="flex items-center gap-3 mb-6">
           <Palette className={`w-6 h-6 ${colors.accent}`} />
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Visual Theme</h3>
-          <p className={`text-sm ${colors.text} opacity-70`}>Customize the appearance and colors</p>
+          <h3 className={`text-xl font-semibold ${colors.text}`}>
+            Visual Theme
+          </h3>
+          <p className={`text-sm ${colors.text} opacity-70`}>
+            Customize the appearance and colors
+          </p>
         </div>
 
         <div className="grid grid-cols-3 gap-4">
@@ -587,22 +701,30 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
                   : `${colors.cardButton}`
               }`}
             >
-              <div className={`w-8 h-8 rounded-full mx-auto mb-3 bg-${theme.color}-400`}></div>
+              <div
+                className={`w-8 h-8 rounded-full mx-auto mb-3 bg-${theme.color}-400`}
+              ></div>
               <span className={`text-sm ${colors.text} block font-medium`}>
                 {theme.name}
               </span>
             </button>
           ))}
         </div>
-        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Select a color theme that matches your preference and environment</p>
+        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>
+          Select a color theme that matches your preference and environment
+        </p>
       </div>
 
       {/* Display Settings */}
       <div>
         <div className="flex items-center gap-3 mb-6">
           <Monitor className={`w-6 h-6 ${colors.accent}`} />
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Display Settings</h3>
-          <p className={`text-sm ${colors.text} opacity-70`}>Control fullscreen mode and display behavior</p>
+          <h3 className={`text-xl font-semibold ${colors.text}`}>
+            Display Settings
+          </h3>
+          <p className={`text-sm ${colors.text} opacity-70`}>
+            Control fullscreen mode and display behavior
+          </p>
         </div>
 
         <div className="space-y-4">
@@ -610,10 +732,13 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
             onClick={handleFullscreenToggle}
             className={`w-full py-4 rounded-lg ${colors.cardButton} border transition-all ${colors.text} font-medium text-lg`}
           >
-            {fullscreen ? "🗗 Exit Display Fullscreen" : "⛶ Enter Display Fullscreen"}
+            {fullscreen
+              ? "🗗 Exit Display Fullscreen"
+              : "⛶ Enter Display Fullscreen"}
           </button>
           <p className={`text-xs ${colors.text} opacity-60 text-center`}>
-            Fullscreen mode hides the mouse cursor and shows only the timer display for distraction-free focus
+            Fullscreen mode hides the mouse cursor and shows only the timer
+            display for distraction-free focus
           </p>
         </div>
       </div>
@@ -637,14 +762,22 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
 
       {/* Main container - Card wrapper */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-6">
-        <div className={`w-full max-w-5xl ${backgroundTheme === 'white' ? 'bg-white/90' : 'bg-black/20'} backdrop-blur-md border ${backgroundTheme === 'white' ? 'border-gray-300' : 'border-white/20'} rounded-2xl shadow-2xl overflow-hidden`}>
+        <div
+          className={`w-full max-w-5xl ${backgroundTheme === "white" ? "bg-white/90" : "bg-black/20"} backdrop-blur-md border ${backgroundTheme === "white" ? "border-gray-300" : "border-white/20"} rounded-2xl shadow-2xl overflow-hidden`}
+        >
           {/* Header */}
-          <div className={`p-6 border-b ${backgroundTheme === 'white' ? 'border-gray-200' : 'border-white/10'}`}>
-            <h1 className={`text-4xl font-bold ${colors.text} text-center`}>Timer Settings</h1>
+          <div
+            className={`p-6 border-b ${backgroundTheme === "white" ? "border-gray-200" : "border-white/10"}`}
+          >
+            <h1 className={`text-4xl font-bold ${colors.text} text-center`}>
+              Timer Settings
+            </h1>
           </div>
 
           {/* Tab Navigation */}
-          <div className={`flex border-b ${backgroundTheme === 'white' ? 'border-gray-200' : 'border-white/10'}`}>
+          <div
+            className={`flex border-b ${backgroundTheme === "white" ? "border-gray-200" : "border-white/10"}`}
+          >
             {[
               { id: "timer", label: "Timer", icon: "⏱️" },
               { id: "function", label: "Function", icon: "🔧" },
@@ -655,8 +788,8 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex-1 py-4 px-6 text-center font-medium transition-all ${
                   activeTab === tab.id
-                    ? `${colors.text} ${backgroundTheme === 'white' ? 'bg-gray-100' : 'bg-white/10'} border-b-2 border-current`
-                    : `${colors.text} opacity-60 hover:opacity-80 ${backgroundTheme === 'white' ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`
+                    ? `${colors.text} ${backgroundTheme === "white" ? "bg-gray-100" : "bg-white/10"} border-b-2 border-current`
+                    : `${colors.text} opacity-60 hover:opacity-80 ${backgroundTheme === "white" ? "hover:bg-gray-50" : "hover:bg-white/5"}`
                 }`}
               >
                 <div className="text-2xl mb-1">{tab.icon}</div>
@@ -673,7 +806,9 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
           </div>
 
           {/* Footer Actions */}
-          <div className={`p-6 border-t ${backgroundTheme === 'white' ? 'border-gray-200' : 'border-white/10'}`}>
+          <div
+            className={`p-6 border-t ${backgroundTheme === "white" ? "border-gray-200" : "border-white/10"}`}
+          >
             <div className="flex gap-4">
               <button
                 onClick={handlePreviewSettings}
@@ -694,10 +829,18 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
 
       {/* Preview Modal */}
       {showPreview && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setShowPreview(false)}>
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 w-80 h-80 mx-4" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setShowPreview(false)}
+        >
+          <div
+            className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 w-80 h-80 mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between mb-4">
-              <h3 className={`text-lg font-semibold ${colors.text}`}>Timer Preview</h3>
+              <h3 className={`text-lg font-semibold ${colors.text}`}>
+                Timer Preview
+              </h3>
               <button
                 onClick={() => setShowPreview(false)}
                 className={`p-2 rounded-full hover:bg-white/10 transition-colors ${colors.text}`}
@@ -706,7 +849,9 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               </button>
             </div>
 
-            <div className={`relative w-full h-60 bg-gradient-to-br ${colors.bg} rounded-lg flex items-center justify-center`}>
+            <div
+              className={`relative w-full h-60 bg-gradient-to-br ${colors.bg} rounded-lg flex items-center justify-center`}
+            >
               <div className="relative w-32 h-32">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                   {showProgress && (
@@ -727,7 +872,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
                         stroke="currentColor"
                         strokeWidth="2"
                         fill="none"
-                        className={`${colors.cardButton.includes('stroke') ? colors.cardButton : 'stroke-current'} transition-colors duration-1000`}
+                        className={`${colors.cardButton.includes("stroke") ? colors.cardButton : "stroke-current"} transition-colors duration-1000`}
                         strokeLinecap="round"
                         strokeDasharray="282.7"
                         strokeDashoffset="70.7"
@@ -737,7 +882,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                   <div
-                    className={`${CONFIG.TIMER_FONTS.find(f => f.key === timerFont)?.class || 'font-sans'} ${colors.text} text-center leading-none`}
+                    className={`${CONFIG.TIMER_FONTS.find((f) => f.key === timerFont)?.class || "font-sans"} ${colors.text} text-center leading-none`}
                     style={{
                       fontSize: (() => {
                         const totalSecs = Math.floor(defaultTimer);
@@ -771,20 +916,21 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
 
                         // Scale font size for preview (smaller than main display)
                         const textLength = timeText.length;
-                        if (timerFormat === "MM") return textLength <= 2 ? '24px' : '20px';
-                        if (timerFormat === "MM:SS") return '18px';
-                        if (timerFormat === "HH:MM:SS") return '16px';
+                        if (timerFormat === "MM")
+                          return textLength <= 2 ? "24px" : "20px";
+                        if (timerFormat === "MM:SS") return "18px";
+                        if (timerFormat === "HH:MM:SS") return "16px";
                         if (timerFormat === "HhMmSs") {
-                          if (textLength <= 3) return '20px';
-                          if (textLength <= 6) return '16px';
-                          return '14px';
+                          if (textLength <= 3) return "20px";
+                          if (textLength <= 6) return "16px";
+                          return "14px";
                         }
-                        return '18px';
+                        return "18px";
                       })(),
-                      maxWidth: '90%',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
+                      maxWidth: "90%",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {(() => {

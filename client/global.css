@@ -102,10 +102,14 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 
-  html, body {
+  html,
+  body {
     overflow-x: hidden;
   }
 }
@@ -121,7 +125,9 @@
 
   /* Custom fonts with clean zeros (no slash) */
   .font-system {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+      Cantarell, sans-serif;
     font-variant-numeric: slashed-zero;
   }
 
@@ -132,7 +138,9 @@
 
   /* Override monospace font to use tabular numbers without slashed zero */
   .font-mono {
-    font-family: 'SF Mono', Monaco, 'Inconsolata', 'Roboto Mono', 'Source Code Pro', Menlo, 'Courier New', monospace;
+    font-family:
+      "SF Mono", Monaco, "Inconsolata", "Roboto Mono", "Source Code Pro", Menlo,
+      "Courier New", monospace;
     font-variant-numeric: tabular-nums;
   }
 

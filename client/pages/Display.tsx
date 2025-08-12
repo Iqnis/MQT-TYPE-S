@@ -35,14 +35,18 @@ interface DisplayProps {
   onBackToSettings: () => void;
 }
 
-export default function Display({ previewSettings, onBackToSettings }: DisplayProps) {
+export default function Display({
+  previewSettings,
+  onBackToSettings,
+}: DisplayProps) {
   // Get settings from localStorage or preview settings
   const getSettings = () => {
     if (previewSettings) {
       return previewSettings;
     }
 
-    const defaultTimer = localStorage.getItem("defaultTimer") || CONFIG.DEFAULT_TIMER;
+    const defaultTimer =
+      localStorage.getItem("defaultTimer") || CONFIG.DEFAULT_TIMER;
     const backgroundTheme = localStorage.getItem("backgroundTheme") || "slate";
     const soundSet = localStorage.getItem("SOUND_SET") || "1";
     const soundEnabled = localStorage.getItem("soundEnabled") === "true";
@@ -59,7 +63,7 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
       autoStart,
       showProgress,
       timerFormat,
-      timerFont
+      timerFont,
     };
   };
 
@@ -84,7 +88,7 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
       inter: "font-sans",
       roboto: "font-mono",
       system: "font-system",
-      arial: "font-arial"
+      arial: "font-arial",
     };
     return fontMap[fontKey as keyof typeof fontMap] || "font-sans";
   };
@@ -98,24 +102,24 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
     switch (timerFormat) {
       case "MM":
         // Short format like "5" or "15"
-        return textLength <= 2 ? '32vw' : '28vw';
+        return textLength <= 2 ? "32vw" : "28vw";
 
       case "MM:SS":
         // Standard format like "05:30"
-        return '20vw';
+        return "20vw";
 
       case "HH:MM:SS":
         // Long format like "01:05:30"
-        return textLength <= 7 ? '14vw' : '12vw';
+        return textLength <= 7 ? "14vw" : "12vw";
 
       case "HhMmSs":
         // Unit format like "1h5m30s" or "5m30s" or "30s"
-        if (textLength <= 3) return '24vw';      // "30s"
-        if (textLength <= 6) return '18vw';      // "5m30s"
-        return '14vw';                           // "1h5m30s"
+        if (textLength <= 3) return "24vw"; // "30s"
+        if (textLength <= 6) return "18vw"; // "5m30s"
+        return "14vw"; // "1h5m30s"
 
       default:
-        return '20vw';
+        return "20vw";
     }
   };
 
@@ -415,7 +419,9 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
           onClick={onBackToSettings}
           className={`absolute top-8 left-8 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl z-10`}
         >
-          <span className={`${colors.text} text-sm font-medium`}>← Back to Settings</span>
+          <span className={`${colors.text} text-sm font-medium`}>
+            ← Back to Settings
+          </span>
         </button>
       )}
 
@@ -529,7 +535,11 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
           {/* Center time display */}
           <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
             {isFinished ? (
-              <img src="logo.png" alt="Logo" className="w-3/4 h-3/4 object-contain" />
+              <img
+                src="logo.png"
+                alt="Logo"
+                className="w-3/4 h-3/4 object-contain"
+              />
             ) : (
               <div
                 id="timer-text"
@@ -537,11 +547,11 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
                 style={{
                   fontWeight: 400,
                   fontSize: getTimerFontSize(),
-                  lineHeight: '1',
-                  maxWidth: '90%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
+                  lineHeight: "1",
+                  maxWidth: "90%",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {formatTime(timeLeft)}

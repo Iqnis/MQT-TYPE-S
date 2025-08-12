@@ -42,7 +42,12 @@ export default function Index() {
   };
 
   if (currentPage === "display") {
-    return <Display previewSettings={previewSettings} onBackToSettings={navigateToSettings} />;
+    return (
+      <Display
+        previewSettings={previewSettings}
+        onBackToSettings={navigateToSettings}
+      />
+    );
   }
 
   return <Settings onNavigateToDisplay={navigateToDisplay} />;

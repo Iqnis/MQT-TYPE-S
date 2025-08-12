@@ -63,6 +63,8 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [autoStart, setAutoStart] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
+  const [timerFormat, setTimerFormat] = useState("MM:SS");
+  const [showPreview, setShowPreview] = useState(false);
 
   // ========================================
   // UTILITY FUNCTIONS

@@ -264,6 +264,14 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
   // EFFECTS
   // ========================================
 
+  // Auto-start timer if enabled
+  useEffect(() => {
+    if (settings.autoStart && !isRunning && !isFinished && timeLeft > 0) {
+      setIsRunning(true);
+      playSound("START");
+    }
+  }, []);
+
   // Timer countdown logic
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;

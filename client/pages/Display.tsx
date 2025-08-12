@@ -503,7 +503,7 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
             ) : (
               <div
                 id="timer-text"
-                className={`font-mono ${colors.timerText} transition-colors duration-1000 text-center leading-none`}
+                className={`${getFontClass(timerFont)} ${colors.timerText} transition-colors duration-1000 text-center leading-none`}
                 style={{
                   fontWeight: 400,
                   fontSize: formatTime(timeLeft).length >= 3 ? '18vw' : '30vw',

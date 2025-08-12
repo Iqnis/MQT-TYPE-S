@@ -145,14 +145,28 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     }
   };
 
-  // Save settings and navigate back
+  // Save settings to browser storage and navigate to display
   const handleSaveSettings = () => {
+    // Save all settings to localStorage
     localStorage.setItem("defaultTimer", defaultTimer.toString());
     localStorage.setItem("backgroundTheme", backgroundTheme);
     localStorage.setItem("SOUND_SET", soundSet.toString());
+    localStorage.setItem("soundEnabled", soundEnabled.toString());
+    localStorage.setItem("autoStart", autoStart.toString());
+    localStorage.setItem("showProgress", showProgress.toString());
+    localStorage.setItem("timerFormat", timerFormat);
 
-    // Navigate to display
-    onNavigateToDisplay();
+    // Navigate to display with saved settings
+    const savedSettings = {
+      defaultTimer,
+      backgroundTheme,
+      soundSet,
+      soundEnabled,
+      autoStart,
+      showProgress,
+      timerFormat
+    };
+    onNavigateToDisplay(savedSettings);
   };
 
   // Preview current settings in popup

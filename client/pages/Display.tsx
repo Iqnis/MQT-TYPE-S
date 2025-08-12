@@ -49,6 +49,7 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
     const autoStart = localStorage.getItem("autoStart") === "true";
     const showProgress = localStorage.getItem("showProgress") !== "false";
     const timerFormat = localStorage.getItem("timerFormat") || "MM:SS";
+    const timerFont = localStorage.getItem("timerFont") || "inter";
 
     return {
       defaultTimer: parseInt(defaultTimer.toString()),
@@ -57,7 +58,8 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
       soundEnabled,
       autoStart,
       showProgress,
-      timerFormat
+      timerFormat,
+      timerFont
     };
   };
 

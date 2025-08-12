@@ -230,7 +230,7 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
   };
 
   const resetTimer = () => {
-    const newSettings = getStoredSettings();
+    const newSettings = getSettings();
     setIsRunning(false);
     setTimeLeft(newSettings.defaultTimer);
     setInitialTime(newSettings.defaultTimer);

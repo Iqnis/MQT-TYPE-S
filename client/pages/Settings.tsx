@@ -173,20 +173,8 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 w-full max-w-md mx-4">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={handleBackToDisplay}
-              className={`p-2 rounded-full hover:bg-white/10 transition-colors ${colors.text}`}
-            >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
-            <h1 className={`text-2xl font-bold ${colors.text}`}>Settings</h1>
-            <button
-              onClick={handleBackToDisplay}
-              className={`p-2 rounded-full hover:bg-white/10 transition-colors ${colors.text}`}
-            >
-              <Play className="w-6 h-6" />
-            </button>
+          <div className="flex items-center justify-center mb-8">
+            <h1 className={`text-3xl font-bold ${colors.text}`}>Timer Settings</h1>
           </div>
 
           {/* Timer Duration Setting */}

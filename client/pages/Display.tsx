@@ -330,6 +330,16 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-white/5 rounded-full blur-xl"></div>
       </div>
 
+      {/* Back to Settings button (only in preview mode) */}
+      {previewSettings && (
+        <button
+          onClick={onBackToSettings}
+          className={`absolute top-8 left-8 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 ${colors.glow} shadow-xl z-10`}
+        >
+          <span className={`${colors.text} text-sm font-medium`}>← Back to Settings</span>
+        </button>
+      )}
+
       {/* Main timer */}
       <div className="relative">
         {/* Outer glow */}

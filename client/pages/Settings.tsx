@@ -24,13 +24,17 @@ const CONFIG = {
 // ========================================
 // SETTINGS COMPONENT
 // ========================================
-export default function Settings() {
+interface SettingsProps {
+  onNavigateToDisplay: (settings?: any) => void;
+}
+
+export default function Settings({ onNavigateToDisplay }: SettingsProps) {
   // Get settings from localStorage
   const getStoredSettings = () => {
     const defaultTimer = localStorage.getItem("defaultTimer") || "60";
     const backgroundTheme = localStorage.getItem("backgroundTheme") || "slate";
     const soundSet = localStorage.getItem("SOUND_SET") || "1";
-    
+
     return {
       defaultTimer: parseInt(defaultTimer),
       backgroundTheme: backgroundTheme,
@@ -112,7 +116,7 @@ export default function Settings() {
     localStorage.setItem("defaultTimer", defaultTimer.toString());
     localStorage.setItem("backgroundTheme", backgroundTheme);
     localStorage.setItem("SOUND_SET", soundSet.toString());
-    
+
     // Navigate back to display
     window.location.href = "/";
   };

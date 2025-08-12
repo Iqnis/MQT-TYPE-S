@@ -249,42 +249,73 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       {/* Timer Duration */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Duration</h3>
-          <div className={`text-3xl font-mono ${colors.accent} bg-white/10 px-4 py-2 rounded-lg`}>
+          <div>
+            <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Duration</h3>
+            <p className={`text-sm ${colors.text} opacity-70 mt-1`}>Set how long the countdown timer will run</p>
+          </div>
+          <div className={`text-3xl font-mono ${colors.accent} ${colors.cardButton} px-4 py-2 rounded-lg border`}>
             {formatTime(defaultTimer)}
           </div>
         </div>
 
         {/* Preset Buttons */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          {CONFIG.TIMER_PRESETS.map((preset) => (
-            <button
-              key={preset.value}
-              onClick={() => setDefaultTimer(preset.value)}
-              className={`p-3 rounded-lg border transition-all ${
-                defaultTimer === preset.value
-                  ? "border-white/40 bg-white/20"
-                  : "border-white/20 bg-white/5 hover:bg-white/10"
-              }`}
-            >
-              <span className={`text-sm ${colors.text} font-medium`}>
-                {preset.name}
-              </span>
-            </button>
-          ))}
+        <div className="mb-6">
+          <label className={`block text-sm font-medium ${colors.text} mb-3`}>Quick Presets</label>
+          <div className="grid grid-cols-3 gap-3">
+            {CONFIG.TIMER_PRESETS.map((preset) => (
+              <button
+                key={preset.value}
+                onClick={() => setDefaultTimer(preset.value)}
+                className={`p-3 rounded-lg border transition-all ${
+                  defaultTimer === preset.value
+                    ? `${colors.cardButton} border-current`
+                    : `${colors.cardButton}`
+                }`}
+              >
+                <span className={`text-sm ${colors.text} font-medium`}>
+                  {preset.name}
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Click any preset to instantly set that duration</p>
+        </div>
+
+        {/* Custom Duration - Draggable */}
+        <div className="mb-6">
+          <label className={`block text-sm font-medium ${colors.text} mb-3`}>Custom Duration (Drag to adjust)</label>
+          <input
+            type="range"
+            min={CONFIG.TIMER_MIN}
+            max={CONFIG.TIMER_MAX}
+            step={CONFIG.TIMER_STEP}
+            value={defaultTimer}
+            onChange={(e) => setDefaultTimer(Number(e.target.value))}
+            className={`w-full h-4 rounded-lg appearance-none cursor-grab active:cursor-grabbing ${
+              backgroundTheme === 'white' ? 'bg-gray-300' : 'bg-white/20'
+            }`}
+            style={{
+              background: backgroundTheme === 'white'
+                ? `linear-gradient(to right, #6b7280 0%, #6b7280 ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, #d1d5db ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, #d1d5db 100%)`
+                : `linear-gradient(to right, currentColor 0%, currentColor ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, rgba(255,255,255,0.2) ${(defaultTimer / CONFIG.TIMER_MAX) * 100}%, rgba(255,255,255,0.2) 100%)`
+            }}
+          />
+          <div className={`flex justify-between text-xs ${colors.text} opacity-60 mt-2`}>
+            <span>{CONFIG.TIMER_MIN}s</span>
+            <span>{Math.floor(CONFIG.TIMER_MAX / 60)}m</span>
+          </div>
+          <p className={`text-xs ${colors.text} opacity-60 mt-1`}>Drag the slider to set any custom duration between 1 minute and 16+ hours</p>
         </div>
 
         {/* Manual Controls */}
-        <div className="flex items-center justify-between mb-4">
-          <label className={`text-sm font-medium ${colors.text}`}>
-            Custom Duration
-          </label>
-          <div className="flex gap-2">
+        <div>
+          <label className={`block text-sm font-medium ${colors.text} mb-3`}>Fine Adjustment</label>
+          <div className="flex gap-2 justify-center">
             <button
               onClick={() =>
                 setDefaultTimer((prev) => Math.max(CONFIG.TIMER_MIN, prev - 60))
               }
-              className={`px-4 py-2 text-lg rounded-lg bg-white/10 hover:bg-white/20 transition ${colors.text}`}
+              className={`px-4 py-2 text-lg rounded-lg ${colors.cardButton} border transition ${colors.text}`}
             >
               -1m
             </button>
@@ -292,7 +323,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               onClick={() =>
                 setDefaultTimer((prev) => Math.max(CONFIG.TIMER_MIN, prev - 5))
               }
-              className={`px-4 py-2 text-lg rounded-lg bg-white/10 hover:bg-white/20 transition ${colors.text}`}
+              className={`px-4 py-2 text-lg rounded-lg ${colors.cardButton} border transition ${colors.text}`}
             >
               -5s
             </button>
@@ -300,7 +331,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               onClick={() =>
                 setDefaultTimer((prev) => Math.min(CONFIG.TIMER_MAX, prev + 5))
               }
-              className={`px-4 py-2 text-lg rounded-lg bg-white/10 hover:bg-white/20 transition ${colors.text}`}
+              className={`px-4 py-2 text-lg rounded-lg ${colors.cardButton} border transition ${colors.text}`}
             >
               +5s
             </button>
@@ -308,66 +339,12 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               onClick={() =>
                 setDefaultTimer((prev) => Math.min(CONFIG.TIMER_MAX, prev + 60))
               }
-              className={`px-4 py-2 text-lg rounded-lg bg-white/10 hover:bg-white/20 transition ${colors.text}`}
+              className={`px-4 py-2 text-lg rounded-lg ${colors.cardButton} border transition ${colors.text}`}
             >
               +1m
             </button>
           </div>
-        </div>
-
-        {/* Range slider */}
-        <input
-          type="range"
-          min={CONFIG.TIMER_MIN}
-          max={CONFIG.TIMER_MAX}
-          step={CONFIG.TIMER_STEP}
-          value={defaultTimer}
-          onChange={(e) => setDefaultTimer(Number(e.target.value))}
-          className="w-full h-3 bg-white/20 rounded-lg appearance-none cursor-pointer mb-2"
-        />
-
-        <div className={`flex justify-between text-xs ${colors.text} opacity-60`}>
-          <span>{CONFIG.TIMER_MIN}s</span>
-          <span>{Math.floor(CONFIG.TIMER_MAX / 60)}m</span>
-        </div>
-      </div>
-
-      {/* Timer Behavior */}
-      <div>
-        <h3 className={`text-xl font-semibold ${colors.text} mb-6`}>Timer Behavior</h3>
-
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className={`${colors.text}`}>Auto-start timer</span>
-            <button
-              onClick={() => setAutoStart(!autoStart)}
-              className={`relative w-12 h-6 rounded-full transition-colors ${
-                autoStart ? colors.button : "bg-white/20"
-              }`}
-            >
-              <div
-                className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
-                  autoStart ? "translate-x-6" : "translate-x-0.5"
-                }`}
-              />
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <span className={`${colors.text}`}>Show progress bar</span>
-            <button
-              onClick={() => setShowProgress(!showProgress)}
-              className={`relative w-12 h-6 rounded-full transition-colors ${
-                showProgress ? colors.button : "bg-white/20"
-              }`}
-            >
-              <div
-                className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
-                  showProgress ? "translate-x-6" : "translate-x-0.5"
-                }`}
-              />
-            </button>
-          </div>
+          <p className={`text-xs ${colors.text} opacity-60 mt-2 text-center`}>Use these buttons to make precise adjustments to your timer duration</p>
         </div>
       </div>
     </div>

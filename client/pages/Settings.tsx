@@ -70,17 +70,26 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
 
   const storedSettings = getStoredSettings();
 
-  // State management
+  // ========================================
+  // STATE MANAGEMENT
+  // ========================================
   const [activeTab, setActiveTab] = useState("timer");
-  const [defaultTimer, setDefaultTimer] = useState(storedSettings.defaultTimer);
-  const [backgroundTheme, setBackgroundTheme] = useState(storedSettings.backgroundTheme);
-  const [soundSet, setSoundSet] = useState(storedSettings.soundSet);
+  const [showPreview, setShowPreview] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  // Timer Settings
+  const [defaultTimer, setDefaultTimer] = useState(storedSettings.defaultTimer);
+
+  // Function Settings
+  const [timerFormat, setTimerFormat] = useState("MM:SS");
+  const [timerFont, setTimerFont] = useState("inter");
   const [autoStart, setAutoStart] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
-  const [timerFormat, setTimerFormat] = useState("MM:SS");
-  const [showPreview, setShowPreview] = useState(false);
+
+  // Extra Function Settings
+  const [backgroundTheme, setBackgroundTheme] = useState(storedSettings.backgroundTheme);
+  const [soundSet, setSoundSet] = useState(storedSettings.soundSet);
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
   // ========================================
   // UTILITY FUNCTIONS

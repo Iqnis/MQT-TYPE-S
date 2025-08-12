@@ -30,13 +30,18 @@ const CONFIG = {
 // ========================================
 // DISPLAY COMPONENT
 // ========================================
-export default function Display() {
+interface DisplayProps {
+  previewSettings?: any;
+  onBackToSettings: () => void;
+}
+
+export default function Display({ previewSettings, onBackToSettings }: DisplayProps) {
   // Get settings from localStorage
   const getStoredSettings = () => {
     const defaultTimer = localStorage.getItem("defaultTimer") || CONFIG.DEFAULT_TIMER;
     const backgroundTheme = localStorage.getItem("backgroundTheme") || "slate";
     const soundSet = localStorage.getItem("SOUND_SET") || "1";
-    
+
     return {
       defaultTimer: parseInt(defaultTimer.toString()),
       backgroundTheme: backgroundTheme.toString(),
@@ -63,7 +68,7 @@ export default function Display() {
   const playSound = (soundType: string) => {
     try {
       const baseName = CONFIG.SOUNDS[soundType as keyof typeof CONFIG.SOUNDS];
-      
+
       if (!baseName) {
         console.warn(`Invalid sound type: ${soundType}`);
         return;
@@ -205,7 +210,7 @@ export default function Display() {
   const addTime = () => {
     setTimeLeft((prev) => {
       const newTime = prev + 5;
-      
+
       if (newTime <= settings.defaultTimer) {
         setPreciseTime(newTime);
         setInitialTime(newTime);

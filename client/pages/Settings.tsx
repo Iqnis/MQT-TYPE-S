@@ -280,19 +280,26 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
             </button>
           </div>
 
+          {/* Preview button */}
+          <div className="mb-6">
+            <button
+              onClick={handlePreviewSettings}
+              className={`w-full py-4 rounded-lg bg-blue-600 hover:bg-blue-700 transition-all text-white font-bold text-lg`}
+            >
+              🔍 Preview Timer
+            </button>
+            <p className={`text-xs ${colors.text} opacity-60 text-center mt-2`}>
+              See how your timer looks with current settings
+            </p>
+          </div>
+
           {/* Action buttons */}
           <div className="flex gap-4">
-            <button
-              onClick={handleBackToDisplay}
-              className={`flex-1 py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all ${colors.text} font-medium`}
-            >
-              Cancel
-            </button>
             <button
               onClick={handleSaveSettings}
               className={`flex-1 py-3 rounded-lg bg-white/20 border border-white/30 hover:bg-white/30 transition-all ${colors.text} font-medium`}
             >
-              Save & Start
+              Save & Start Timer
             </button>
           </div>
         </div>

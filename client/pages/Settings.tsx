@@ -577,7 +577,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
           {/* Tab Navigation */}
           <div className={`flex border-b ${backgroundTheme === 'white' ? 'border-gray-200' : 'border-white/10'}`}>
             {[
-              { id: "timer", label: "Timer", icon: "⏱️" },
+              { id: "timer", label: "Timer", icon: "⏱���" },
               { id: "function", label: "Function", icon: "🔧" },
               { id: "extra", label: "Extra Function", icon: "⚡" },
             ].map((tab) => (
@@ -640,27 +640,31 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
             <div className={`relative w-full h-60 bg-gradient-to-br ${colors.bg} rounded-lg flex items-center justify-center`}>
               <div className="relative w-32 h-32">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                    className="opacity-20"
-                  />
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                    className={`${colors.cardButton.includes('stroke') ? colors.cardButton : 'stroke-current'} transition-colors duration-1000`}
-                    strokeLinecap="round"
-                    strokeDasharray="282.7"
-                    strokeDashoffset="70.7"
-                  />
+                  {showProgress && (
+                    <>
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="45"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        fill="none"
+                        className="opacity-20"
+                      />
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="45"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        fill="none"
+                        className={`${colors.cardButton.includes('stroke') ? colors.cardButton : 'stroke-current'} transition-colors duration-1000`}
+                        strokeLinecap="round"
+                        strokeDasharray="282.7"
+                        strokeDashoffset="70.7"
+                      />
+                    </>
+                  )}
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className={`text-2xl font-mono ${colors.text} text-center`}>

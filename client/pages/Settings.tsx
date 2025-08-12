@@ -394,12 +394,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {[
-            { format: "MM", example: "05", description: "Minutes only" },
-            { format: "MM:SS", example: "05:30", description: "Minutes and seconds" },
-            { format: "HH:MM:SS", example: "01:05:30", description: "Hours, minutes, seconds" },
-            { format: "HhMmSs", example: "1h5m30s", description: "Short format with units" },
-          ].map((option) => (
+          {CONFIG.TIMER_FORMATS.map((option) => (
             <button
               key={option.format}
               onClick={() => setTimerFormat(option.format)}
@@ -410,13 +405,44 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
               }`}
             >
               <div className={`text-center ${colors.text}`}>
-                <div className="text-lg font-mono mb-1">{option.example}</div>
+                <div className={`text-lg mb-1 ${CONFIG.TIMER_FONTS.find(f => f.key === timerFont)?.class || 'font-sans'}`}>
+                  {option.example}
+                </div>
                 <div className="text-xs opacity-70">{option.description}</div>
               </div>
             </button>
           ))}
         </div>
         <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Select the format that's easiest for you to read during countdown</p>
+      </div>
+
+      {/* Timer Font */}
+      <div>
+        <div className="mb-6">
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Font</h3>
+          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>Choose the font style for timer display (zero without slash)</p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          {CONFIG.TIMER_FONTS.map((font) => (
+            <button
+              key={font.key}
+              onClick={() => setTimerFont(font.key)}
+              className={`p-4 rounded-lg border transition-all ${
+                timerFont === font.key
+                  ? `${colors.cardButton} border-current`
+                  : `${colors.cardButton}`
+              }`}
+            >
+              <div className={`text-center ${colors.text}`}>
+                <div className={`text-2xl mb-2 ${font.class}`}>00:30</div>
+                <div className="text-sm font-medium mb-1">{font.name}</div>
+                <div className="text-xs opacity-70">{font.description}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>All fonts use zeros without slashes for better readability</p>
       </div>
 
       {/* Timer Behavior */}

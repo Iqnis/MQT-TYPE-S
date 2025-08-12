@@ -566,61 +566,116 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
         <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-white/5 rounded-full blur-xl"></div>
       </div>
 
-      {/* Main container */}
-      <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Header */}
-        <div className="p-6 border-b border-white/10">
-          <h1 className={`text-4xl font-bold ${colors.text} text-center`}>Timer Settings</h1>
-        </div>
+      {/* Main container - Card wrapper */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-6">
+        <div className={`w-full max-w-5xl ${backgroundTheme === 'white' ? 'bg-white/90' : 'bg-black/20'} backdrop-blur-md border ${backgroundTheme === 'white' ? 'border-gray-300' : 'border-white/20'} rounded-2xl shadow-2xl overflow-hidden`}>
+          {/* Header */}
+          <div className={`p-6 border-b ${backgroundTheme === 'white' ? 'border-gray-200' : 'border-white/10'}`}>
+            <h1 className={`text-4xl font-bold ${colors.text} text-center`}>Timer Settings</h1>
+          </div>
 
-        {/* Tab Navigation */}
-        <div className="flex border-b border-white/10">
-          {[
-            { id: "timer", label: "Timer", icon: "⏱️" },
-            { id: "function", label: "Function", icon: "🔧" },
-            { id: "extra", label: "Extra Function", icon: "⚡" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-4 px-6 text-center font-medium transition-all ${
-                activeTab === tab.id
-                  ? `${colors.text} bg-white/10 border-b-2 border-current`
-                  : `${colors.text} opacity-60 hover:opacity-80 hover:bg-white/5`
-              }`}
-            >
-              <div className="text-2xl mb-1">{tab.icon}</div>
-              <div className="text-sm">{tab.label}</div>
-            </button>
-          ))}
-        </div>
+          {/* Tab Navigation */}
+          <div className={`flex border-b ${backgroundTheme === 'white' ? 'border-gray-200' : 'border-white/10'}`}>
+            {[
+              { id: "timer", label: "Timer", icon: "⏱️" },
+              { id: "function", label: "Function", icon: "🔧" },
+              { id: "extra", label: "Extra Function", icon: "⚡" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 py-4 px-6 text-center font-medium transition-all ${
+                  activeTab === tab.id
+                    ? `${colors.text} ${backgroundTheme === 'white' ? 'bg-gray-100' : 'bg-white/10'} border-b-2 border-current`
+                    : `${colors.text} opacity-60 hover:opacity-80 ${backgroundTheme === 'white' ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`
+                }`}
+              >
+                <div className="text-2xl mb-1">{tab.icon}</div>
+                <div className="text-sm">{tab.label}</div>
+              </button>
+            ))}
+          </div>
 
-        {/* Tab Content */}
-        <div className="flex-1 p-8 overflow-y-auto">
-          <div className="max-w-4xl mx-auto">
+          {/* Tab Content */}
+          <div className="p-8 max-h-96 overflow-y-auto">
             {activeTab === "timer" && <TimerSettings />}
             {activeTab === "function" && <FunctionSettings />}
             {activeTab === "extra" && <ExtraFunctionSettings />}
           </div>
-        </div>
 
-        {/* Footer Actions */}
-        <div className="p-6 border-t border-white/10">
-          <div className="max-w-4xl mx-auto flex gap-4">
-            <button
-              onClick={handlePreviewSettings}
-              className={`flex-1 py-4 rounded-lg bg-blue-600 hover:bg-blue-700 transition-all text-white font-bold text-lg`}
-            >
-              🔍 Preview Timer
-            </button>
-            <button
-              onClick={handleSaveSettings}
-              className={`flex-1 py-4 rounded-lg ${colors.button} transition-all text-white font-bold text-lg`}
-            >
-              💾 Save & Start Timer
-            </button>
+          {/* Footer Actions */}
+          <div className={`p-6 border-t ${backgroundTheme === 'white' ? 'border-gray-200' : 'border-white/10'}`}>
+            <div className="flex gap-4">
+              <button
+                onClick={handlePreviewSettings}
+                className={`flex-1 py-4 rounded-lg bg-blue-600 hover:bg-blue-700 transition-all text-white font-bold text-lg`}
+              >
+                🔍 Preview Timer
+              </button>
+              <button
+                onClick={handleSaveSettings}
+                className={`flex-1 py-4 rounded-lg ${colors.button} transition-all text-white font-bold text-lg`}
+              >
+                💾 Save & Start Timer
+              </button>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Preview Modal */}
+      {showPreview && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setShowPreview(false)}>
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 w-80 h-80 mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className={`text-lg font-semibold ${colors.text}`}>Timer Preview</h3>
+              <button
+                onClick={() => setShowPreview(false)}
+                className={`p-2 rounded-full hover:bg-white/10 transition-colors ${colors.text}`}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className={`relative w-full h-60 bg-gradient-to-br ${colors.bg} rounded-lg flex items-center justify-center`}>
+              <div className="relative w-32 h-32">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    className="opacity-20"
+                  />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    className={`${colors.cardButton.includes('stroke') ? colors.cardButton : 'stroke-current'} transition-colors duration-1000`}
+                    strokeLinecap="round"
+                    strokeDasharray="282.7"
+                    strokeDashoffset="70.7"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className={`text-2xl font-mono ${colors.text} text-center`}>
+                    {formatTime(defaultTimer)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p className={`text-xs ${colors.text} opacity-60 text-center mt-4`}>
+              This is how your timer will look with current settings
+            </p>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

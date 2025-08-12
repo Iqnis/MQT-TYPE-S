@@ -452,24 +452,26 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
               className="opacity-20"
             />
 
-            {/* Progress circle */}
-            <circle
-              cx="50"
-              cy="50"
-              r={CONFIG.CIRCLE_RADIUS}
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              className={`${colors.circle} transition-colors duration-1000`}
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
-              style={{
-                filter: `drop-shadow(0 0 2px currentColor)`,
-                transition:
-                  "stroke-dashoffset 0.1s linear, stroke 1s ease-in-out",
-              }}
-            />
+            {/* Progress circle - only show if showProgress is enabled */}
+            {showProgress && (
+              <circle
+                cx="50"
+                cy="50"
+                r={CONFIG.CIRCLE_RADIUS}
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="none"
+                className={`${colors.circle} transition-colors duration-1000`}
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                style={{
+                  filter: `drop-shadow(0 0 2px currentColor)`,
+                  transition:
+                    "stroke-dashoffset 0.1s linear, stroke 1s ease-in-out",
+                }}
+              />
+            )}
           </svg>
 
           {/* Center time display */}

@@ -180,6 +180,7 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
     localStorage.setItem("autoStart", autoStart.toString());
     localStorage.setItem("showProgress", showProgress.toString());
     localStorage.setItem("timerFormat", timerFormat);
+    localStorage.setItem("timerFont", timerFont);
 
     // Navigate to display with saved settings
     const savedSettings = {
@@ -189,7 +190,8 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
       soundEnabled,
       autoStart,
       showProgress,
-      timerFormat
+      timerFormat,
+      timerFont
     };
     onNavigateToDisplay(savedSettings);
   };

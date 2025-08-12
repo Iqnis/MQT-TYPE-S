@@ -45,11 +45,19 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
     const defaultTimer = localStorage.getItem("defaultTimer") || CONFIG.DEFAULT_TIMER;
     const backgroundTheme = localStorage.getItem("backgroundTheme") || "slate";
     const soundSet = localStorage.getItem("SOUND_SET") || "1";
+    const soundEnabled = localStorage.getItem("soundEnabled") === "true";
+    const autoStart = localStorage.getItem("autoStart") === "true";
+    const showProgress = localStorage.getItem("showProgress") !== "false";
+    const timerFormat = localStorage.getItem("timerFormat") || "MM:SS";
 
     return {
       defaultTimer: parseInt(defaultTimer.toString()),
       backgroundTheme: backgroundTheme.toString(),
-      soundSet: parseInt(soundSet.toString())
+      soundSet: parseInt(soundSet.toString()),
+      soundEnabled,
+      autoStart,
+      showProgress,
+      timerFormat
     };
   };
 
@@ -58,11 +66,14 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
   // State management
   const [timeLeft, setTimeLeft] = useState(settings.defaultTimer);
   const [initialTime, setInitialTime] = useState(settings.defaultTimer);
-  const [isRunning, setIsRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(settings.autoStart || false);
   const [isFinished, setIsFinished] = useState(false);
   const [preciseTime, setPreciseTime] = useState(settings.defaultTimer);
   const [backgroundTheme] = useState(settings.backgroundTheme);
   const [soundSet] = useState(settings.soundSet);
+  const [soundEnabled] = useState(settings.soundEnabled);
+  const [showProgress] = useState(settings.showProgress);
+  const [timerFormat] = useState(settings.timerFormat);
 
   // ========================================
   // UTILITY FUNCTIONS

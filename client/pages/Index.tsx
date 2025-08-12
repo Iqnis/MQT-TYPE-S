@@ -3,24 +3,25 @@ import Display from "./Display";
 import Settings from "./Settings";
 
 export default function Index() {
-  const [currentPage, setCurrentPage] = useState("display");
+  const [currentPage, setCurrentPage] = useState("settings"); // Default to settings
+  const [previewSettings, setPreviewSettings] = useState(null);
 
   useEffect(() => {
     // Simple client-side routing
     const path = window.location.pathname;
-    if (path === "/settings") {
-      setCurrentPage("settings");
-    } else {
+    if (path === "/display") {
       setCurrentPage("display");
+    } else {
+      setCurrentPage("settings"); // Default to settings
     }
 
     // Listen for navigation
     const handlePopState = () => {
       const path = window.location.pathname;
-      if (path === "/settings") {
-        setCurrentPage("settings");
-      } else {
+      if (path === "/display") {
         setCurrentPage("display");
+      } else {
+        setCurrentPage("settings");
       }
     };
 
@@ -28,9 +29,21 @@ export default function Index() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  if (currentPage === "settings") {
-    return <Settings />;
+  // Handle navigation between pages
+  const navigateToDisplay = (settings = null) => {
+    setPreviewSettings(settings);
+    setCurrentPage("display");
+    window.history.pushState({}, "", "/display");
+  };
+
+  const navigateToSettings = () => {
+    setCurrentPage("settings");
+    window.history.pushState({}, "", "/");
+  };
+
+  if (currentPage === "display") {
+    return <Display previewSettings={previewSettings} onBackToSettings={navigateToSettings} />;
   }
 
-  return <Display />;
+  return <Settings onNavigateToDisplay={navigateToDisplay} />;
 }

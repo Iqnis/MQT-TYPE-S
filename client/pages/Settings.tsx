@@ -352,78 +352,84 @@ export default function Settings({ onNavigateToDisplay }: SettingsProps) {
 
   const FunctionSettings = () => (
     <div className="space-y-8">
-      {/* Sound Settings */}
+      {/* Timer Format */}
       <div>
-        <div className="flex items-center gap-3 mb-6">
-          <Volume2 className={`w-6 h-6 ${colors.accent}`} />
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Sound Settings</h3>
+        <div className="mb-6">
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Format</h3>
+          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>Choose how the countdown time is displayed</p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          {[
+            { format: "MM", example: "05", description: "Minutes only" },
+            { format: "MM:SS", example: "05:30", description: "Minutes and seconds" },
+            { format: "HH:MM:SS", example: "01:05:30", description: "Hours, minutes, seconds" },
+            { format: "HhMmSs", example: "1h5m30s", description: "Short format with units" },
+          ].map((option) => (
+            <button
+              key={option.format}
+              onClick={() => setTimerFormat(option.format)}
+              className={`p-4 rounded-lg border transition-all ${
+                timerFormat === option.format
+                  ? `${colors.cardButton} border-current`
+                  : `${colors.cardButton}`
+              }`}
+            >
+              <div className={`text-center ${colors.text}`}>
+                <div className="text-lg font-mono mb-1">{option.example}</div>
+                <div className="text-xs opacity-70">{option.description}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+        <p className={`text-xs ${colors.text} opacity-60 mt-2`}>Select the format that's easiest for you to read during countdown</p>
+      </div>
+
+      {/* Timer Behavior */}
+      <div>
+        <div className="mb-6">
+          <h3 className={`text-xl font-semibold ${colors.text}`}>Timer Behavior</h3>
+          <p className={`text-sm ${colors.text} opacity-70 mt-1`}>Control how the timer behaves when started</p>
         </div>
 
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <span className={`${colors.text}`}>Enable sounds</span>
+            <div>
+              <span className={`${colors.text} font-medium`}>Auto-start timer</span>
+              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>Timer starts immediately when display opens</p>
+            </div>
             <button
-              onClick={() => setSoundEnabled(!soundEnabled)}
+              onClick={() => setAutoStart(!autoStart)}
               className={`relative w-12 h-6 rounded-full transition-colors ${
-                soundEnabled ? colors.button : "bg-white/20"
+                autoStart ? colors.button : (backgroundTheme === 'white' ? 'bg-gray-300' : 'bg-white/20')
               }`}
             >
               <div
                 className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
-                  soundEnabled ? "translate-x-6" : "translate-x-0.5"
+                  autoStart ? "translate-x-6" : "translate-x-0.5"
                 }`}
               />
             </button>
           </div>
 
-          <div>
-            <span className={`block mb-3 font-medium ${colors.text}`}>Sound Pack:</span>
-            <div className="grid grid-cols-3 gap-3">
-              {[1, 2, 3].map((setNum) => (
-                <button
-                  key={setNum}
-                  onClick={() => setSoundSet(setNum)}
-                  className={`p-4 rounded-lg transition-all ${
-                    soundSet === setNum
-                      ? "bg-white/20 font-bold border border-white/40"
-                      : "bg-white/10 hover:bg-white/20 border border-white/20"
-                  }`}
-                >
-                  <div className={`text-center ${colors.text}`}>
-                    <div className="text-lg mb-1">🔊</div>
-                    <div className="text-sm">Set {setNum}</div>
-                  </div>
-                </button>
-              ))}
+          <div className="flex items-center justify-between">
+            <div>
+              <span className={`${colors.text} font-medium`}>Show progress bar</span>
+              <p className={`text-xs ${colors.text} opacity-60 mt-1`}>Display circular progress ring around timer</p>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Visual Settings */}
-      <div>
-        <div className="flex items-center gap-3 mb-6">
-          <Palette className={`w-6 h-6 ${colors.accent}`} />
-          <h3 className={`text-xl font-semibold ${colors.text}`}>Visual Theme</h3>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          {CONFIG.THEMES.map((theme) => (
             <button
-              key={theme.key}
-              onClick={() => setBackgroundTheme(theme.key)}
-              className={`p-4 rounded-lg border transition-all ${
-                backgroundTheme === theme.key
-                  ? "border-white/40 bg-white/20"
-                  : "border-white/20 bg-white/5 hover:bg-white/10"
+              onClick={() => setShowProgress(!showProgress)}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                showProgress ? colors.button : (backgroundTheme === 'white' ? 'bg-gray-300' : 'bg-white/20')
               }`}
             >
-              <div className={`w-8 h-8 rounded-full mx-auto mb-3 bg-${theme.color}-400`}></div>
-              <span className={`text-sm ${colors.text} block font-medium`}>
-                {theme.name}
-              </span>
+              <div
+                className={`absolute w-5 h-5 bg-white rounded-full top-0.5 transition-transform ${
+                  showProgress ? "translate-x-6" : "translate-x-0.5"
+                }`}
+              />
             </button>
-          ))}
+          </div>
         </div>
       </div>
     </div>

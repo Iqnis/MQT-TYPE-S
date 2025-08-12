@@ -48,14 +48,17 @@ const CONFIG = {
 };
 
 // ========================================
-// SETTINGS COMPONENT
+// SETTINGS COMPONENT INTERFACE
 // ========================================
 interface SettingsProps {
   onNavigateToDisplay: (settings?: any) => void;
 }
 
 export default function Settings({ onNavigateToDisplay }: SettingsProps) {
-  // Get settings from localStorage
+
+  // ========================================
+  // INITIAL SETTINGS LOADER
+  // ========================================
   const getStoredSettings = () => {
     const defaultTimer = localStorage.getItem("defaultTimer") || "60";
     const backgroundTheme = localStorage.getItem("backgroundTheme") || "slate";

@@ -36,8 +36,12 @@ interface DisplayProps {
 }
 
 export default function Display({ previewSettings, onBackToSettings }: DisplayProps) {
-  // Get settings from localStorage
-  const getStoredSettings = () => {
+  // Get settings from localStorage or preview settings
+  const getSettings = () => {
+    if (previewSettings) {
+      return previewSettings;
+    }
+
     const defaultTimer = localStorage.getItem("defaultTimer") || CONFIG.DEFAULT_TIMER;
     const backgroundTheme = localStorage.getItem("backgroundTheme") || "slate";
     const soundSet = localStorage.getItem("SOUND_SET") || "1";
@@ -49,7 +53,7 @@ export default function Display({ previewSettings, onBackToSettings }: DisplayPr
     };
   };
 
-  const settings = getStoredSettings();
+  const settings = getSettings();
 
   // State management
   const [timeLeft, setTimeLeft] = useState(settings.defaultTimer);
